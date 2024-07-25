@@ -1,11 +1,11 @@
-from models import Player, Tournament, Turn, Match, TournamentList
+from models import Player, Tournament, Turn, Match
 
 
 def display_player_info(self):
-    return (f"{self.family_name} {self.first_name}, "
-            f"date of birth: {self.date_of_birth}, "
-            f"ID: {self.national_chess_number}, "
-            f"points: {self.points}")
+    print(f"{self.family_name} {self.first_name}, "
+          f"date of birth: {self.date_of_birth}, "
+          f"ID: {self.national_chess_number}, "
+          f"points: {self.points}")
 
 
 def display_tournament_list():
@@ -13,11 +13,11 @@ def display_tournament_list():
 
 
 def display_tournament_info(self):
-    return f"{self.name}, {self.date}"
+    print(f"{self.name}, {self.date}")
 
 
 def display_tournament_players_info(tournament):
-    Tournament.players_list.sort(key=lambda player: (player.family_name, player.first_name))
+    tournament.players_list.sort(key=lambda player: (player.family_name, player.first_name))
     for player in Tournament.players_list:
         print(f"{player.family_name} {player.first_name}")
 
