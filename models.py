@@ -16,6 +16,9 @@ class Player:
     def update_points(self, score):
         self.points += score
 
+    def __str__(self):
+        return f"{self.family_name} {self.first_name}, ID: {self.national_chess_number}, Points: {self.points}"
+
 
 class Tournament:
 
@@ -70,16 +73,11 @@ class Match:
         self.result = None
         self.outcome = None
 
-    def set_match_result(self, player1_score, player2_score):
-        self.result = (player1_score, player2_score)
-        self.player1.points += player1_score
-        self.player2.points += player2_score
-
     def match_result(self, outcome):
-        if outcome == "player1":
+        if outcome == self.player1:
             self.player1.points += 1
             self.player2.points -= 1
-        elif outcome == "player2":
+        elif outcome == self.player2:
             self.player2.points += 1
             self.player1.points -= 1
         elif outcome == "draw":
@@ -88,6 +86,9 @@ class Match:
         else:
             raise ValueError("Le résultat doit impérativement comporter le nom du joueur1 du joueur2, ou 'draw'")
         self.outcome = outcome
+
+    def __str__(self):
+        return f"Match: {self.player1} vs {self.player2}, Result: {self.result}"
 
 
 class Turn:
@@ -103,9 +104,12 @@ class Turn:
 
     def get_results(self):
         results = []
-        for match in self.matches:
+        for Match.match in self.matches:
             results.append(match.match_result())
         return results
+
+    def __str__(self):
+        return f"Turn: {self.name}, Matches: {[str(match) for Match.match in self.matches]}"
 
 
 blunt_roger_1982 = Player("blunt", "roger", 1982)
@@ -128,8 +132,16 @@ tournoi_test.add_turn(round1)
 
 print(str(tournoi_test))
 
-premier_match = Match(doe_john_2001, blunt_roger_1982)
+match1 = Match(doe_john_2001, blunt_roger_1982)
 
-premier_match.match_result(player1)
+round1.add_match(match1)
 
-print(doe_john_2001.points)
+print("\nMatches in Round 1:")
+for match in round1.matches:
+    print(f"{match.player1.first_name} {match.player1.family_name} vs {match.player2.first_name} {match.player2.family_name}")
+
+match1.match_result(blunt_roger_1982)
+
+print(str(doe_john_2001))
+
+print(str(blunt_roger_1982))
