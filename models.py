@@ -42,22 +42,6 @@ class Tournament:
         self.turns_list.append(turn)
         self.actual_turn_number += 1
 
-    # Déclaration d'une fonction qui va définir les matchs pour un nouveau tour
-    def match_making(self):
-        # D'abord on vérifie s'il reste au moins un tour à jouer
-        if self.actual_turn_number < self.number_of_turns:
-            # Ensuite on va trier notre liste de joueurs en fonction de leur nombre de points
-            self.players_list.sort(key=lambda player: player.points)
-            # Maintenant on fait des paires par ordre croissant de points
-            pairs = []
-            for i in range(0, len(self.players_list), 2):
-                if i + 1 < len(self.players_list):
-                    pairs.append(self.players_list[i], self.players_list[i + 1])
-            # Reste à ajouter une fonction qui teste si nos paires se sont déjà rencontrées
-            return pairs
-        else:
-            print("Le tournoi est terminé, merci à tous d'avoir participé!")
-
     def __str__(self):
         return (f"Tournament: {self.name}, Location: {self.location}, Date: {self.date}, "
                 f"Description: {self.description}, Current Turn: {self.actual_turn_number}/{self.number_of_turns}")
@@ -95,12 +79,13 @@ class Turn:
 
     """Déclaration de la classe tour"""
 
-    def __init__(self, name):
+    def __init__(self, name, players_list):
         self.name = name
+        self.players_list = players_list
         self.matches = []
 
-    def add_match(self, match):
-        self.matches.append(match)
+    def ask_for_players(self, tournament):
+        self.players_list = tournament.players_list
 
     def get_results(self):
         results = []
@@ -108,17 +93,33 @@ class Turn:
             results.append(match.match_result())
         return results
 
+    # Déclaration d'une fonction qui va définir les matchs pour un nouveau tour
+    def match_making(self):
+        # Ensuite on va trier notre liste de joueurs en fonction de leur nombre de points
+        self.players_list.sort(key=lambda player: player.points)
+        # Maintenant on fait des paires par ordre croissant de points
+        matches = []
+        for i in range(0, len(self.players_list), 2):
+            if i + 1 < len(self.players_list):
+                matches.append(self.players_list[i], self.players_list[i + 1])
+        # Reste à ajouter une fonction qui teste si nos paires se sont déjà rencontrées
+        return matches
+
     def __str__(self):
         return f"Turn: {self.name}, Matches: {[str(match) for Match.match in self.matches]}"
 
 
 blunt_roger_1982 = Player("blunt", "roger", 1982)
 doe_john_2001 = Player("doe", "john", 2001)
+muller_jeremy_1992 = Player("muller", "jeremy", 1992)
+jeanssone_thomas_1993 = Player("jeanssone", "thomas", 1993)
 
 tournoi_test = Tournament("Test", "taverny", 25072024, "on s'éclate en python!")
 
 tournoi_test.add_player(blunt_roger_1982)
 tournoi_test.add_player(doe_john_2001)
+tournoi_test.add_player(jeanssone_thomas_1993)
+tournoi_test.add_player(muller_jeremy_1992)
 
 print(str(tournoi_test))
 
@@ -126,22 +127,20 @@ blunt_roger_1982.add_national_chess_number("AB12345")
 
 print(blunt_roger_1982.national_chess_number)
 
-round1 = Turn("round1")
+round1 = Turn("round1", [doe_john_2001, blunt_roger_1982, muller_jeremy_1992, jeanssone_thomas_1993])
 
 tournoi_test.add_turn(round1)
 
 print(str(tournoi_test))
 
-match1 = Match(doe_john_2001, blunt_roger_1982)
-
-round1.add_match(match1)
-
-print("\nMatches in Round 1:")
-for match in round1.matches:
-    print(f"{match.player1.first_name} {match.player1.family_name} vs {match.player2.first_name} {match.player2.family_name}")
-
-match1.match_result(blunt_roger_1982)
-
 print(str(doe_john_2001))
 
 print(str(blunt_roger_1982))
+
+round1.match_making()
+
+print("\nMatches in Round 1:")
+for match in round1.matches:
+    print(f"{match.player1.first_name} {match.player1.family_name} vs "
+          f"{match.player2.first_name} {match.player2.family_name}")
+
