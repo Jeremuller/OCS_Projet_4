@@ -42,6 +42,13 @@ class Tournament:
         self.turns_list.append(turn)
         self.actual_turn_number += 1
 
+    def check_tournament_not_finished(func):
+        def wrapper(turn, *args, **kwargs):
+            if turn.actual_turn_number >= turn.numbers_of_turns:
+                raise ValueError("Le tournoi est terminé, aucun nouveau match ne peut être joué")
+            return func(turn, *args, **kwargs)
+        return wrapper
+
     def __str__(self):
         return (f"Tournament: {self.name}, Location: {self.location}, Date: {self.date}, "
                 f"Description: {self.description}, Current Turn: {self.actual_turn_number}/{self.number_of_turns}")
@@ -89,19 +96,23 @@ class Turn:
 
     def get_results(self):
         results = []
-        for Match.match in self.matches:
+        for match in self.matches:
             results.append(match.match_result())
         return results
 
+    # Ajout d'un décorateur pour tester l'avancement du tournoi
+    @Tournament.check_tournament_not_finished
     # Déclaration d'une fonction qui va définir les matchs pour un nouveau tour
     def match_making(self):
-        # Ensuite on va trier notre liste de joueurs en fonction de leur nombre de points
+        #  Tri de la liste de joueurs en fonction de leur nombre de points
         self.players_list.sort(key=lambda player: player.points)
         # Maintenant on fait des paires par ordre croissant de points
         matches = []
         for i in range(0, len(self.players_list), 2):
             if i + 1 < len(self.players_list):
-                matches.append(self.players_list[i], self.players_list[i + 1])
+                match = Match(self.players_list[i], self.players_list[i+1])
+                matches.append(match)
+        self.matches = matches
         # Reste à ajouter une fonction qui teste si nos paires se sont déjà rencontrées
         return matches
 
