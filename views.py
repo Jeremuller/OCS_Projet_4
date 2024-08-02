@@ -1,6 +1,3 @@
-from models import Player, Tournament, Turn, Match, tournoi_test
-
-
 class TournamentView:
 
     @staticmethod
@@ -48,10 +45,9 @@ class TournamentView:
             for turn.match in turn.matches:
                 print(str(turn.match))
 
-
-TournamentView.display_tournament_turns(tournoi_test)
-TournamentView.display_tournament_infos(tournoi_test)
-TournamentView.display_welcome_message()
-TournamentView.display_menu()
-
+    @staticmethod
+    def display_match_results(matches):
+        print("\nRésultats des matchs: ")
+        for match in matches:
+            print(f"{match.player1} vs {match.player2} ->> vainqueur: {match.result}")
 
