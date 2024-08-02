@@ -1,3 +1,5 @@
+import random
+
 
 class Player:
 
@@ -13,11 +15,16 @@ class Player:
     def add_national_chess_number(self, national_chess_number):
         self.national_chess_number = national_chess_number
 
-    def update_points(self, score):
-        self.points += score
-
     def __str__(self):
         return f"{self.family_name} {self.first_name}, ID: {self.national_chess_number}, Points: {self.points}"
+
+
+class FinishedTournamentException(Exception):
+    pass
+
+
+class IncorrectMatchResultException(Exception):
+    pass
 
 
 class Tournament:
@@ -38,16 +45,13 @@ class Tournament:
     def add_player(self, player):
         self.players_list.append(player)
 
-    def add_turn(self, turn):
+    def create_turn(self, name):
+        if self.actual_turn_number >= self.number_of_turns:
+            raise FinishedTournamentException("Le tournoi est terminé, aucun match ne peut être joué")
+        turn = Turn(name, self.players_list)
         self.turns_list.append(turn)
         self.actual_turn_number += 1
-
-    def check_tournament_not_finished(func):
-        def wrapper(turn, *args, **kwargs):
-            if turn.actual_turn_number >= turn.numbers_of_turns:
-                raise ValueError("Le tournoi est terminé, aucun nouveau match ne peut être joué")
-            return func(turn, *args, **kwargs)
-        return wrapper
+        return turn
 
     def __str__(self):
         return (f"Tournament: {self.name}, Location: {self.location}, Date: {self.date}, "
@@ -58,72 +62,104 @@ class Match:
 
     """Déclaration de la classe match"""
 
-    def __init__(self, player1, player2):
+    def __init__(self, match_id, player1, player2):
         self.player1 = player1
         self.player2 = player2
+        self.match_id = match_id
         self.result = None
-        self.outcome = None
 
-    def match_result(self, outcome):
-        if outcome == self.player1:
+    def match_result(self, result):
+        if result == self.player1:
             self.player1.points += 1
             self.player2.points -= 1
-        elif outcome == self.player2:
+        elif result == self.player2:
             self.player2.points += 1
             self.player1.points -= 1
-        elif outcome == "draw":
+        elif result == "draw":
             self.player1.points += 0.5
             self.player2.points += 0.5
         else:
-            raise ValueError("Le résultat doit impérativement comporter le nom du joueur1 du joueur2, ou 'draw'")
-        self.outcome = outcome
+            raise IncorrectMatchResultException(
+                "Le résultat doit impérativement comporter le nom du joueur1 du joueur2, ou 'draw'")
+        self.result = result
 
     def __str__(self):
-        return f"Match: {self.player1} vs {self.player2}, Result: {self.result}"
+        return f"{self.match_id}: {self.player1} vs {self.player2}, Result: {self.result}"
 
 
 class Turn:
 
     """Déclaration de la classe tour"""
 
-    def __init__(self, name, players_list):
+    def __init__(self, name, players_list, previous_matches=None):
         self.name = name
         self.players_list = players_list
         self.matches = []
+        self.previous_matches = previous_matches if previous_matches else []
 
-    def ask_for_players(self, tournament):
-        self.players_list = tournament.players_list
-
-    def get_results(self):
-        results = []
-        for match in self.matches:
-            results.append(match.match_result())
-        return results
-
-    # Ajout d'un décorateur pour tester l'avancement du tournoi
-    @Tournament.check_tournament_not_finished
     # Déclaration d'une fonction qui va définir les matchs pour un nouveau tour
-    def match_making(self):
-        #  Tri de la liste de joueurs en fonction de leur nombre de points
-        self.players_list.sort(key=lambda player: player.points)
-        # Maintenant on fait des paires par ordre croissant de points
+    def generate_matches(self):
+        if self.name == "round_1":
+            # Mélange les joueurs aléatoirement pour le premier tour
+            random.shuffle(self.players_list)
+        else:
+            #  Tri de la liste de joueurs en fonction de leur nombre de points
+            self.players_list.sort(key=lambda player: player.points, reverse=True)
+            i = 0
+            while i < len(self.players_list) - 1:
+                j = i
+                while j < len(self.players_list) - 1 and self.players_list[j].points == self.players_list[j + 1].points:
+                    j += 1
+                if j > i and (j - i + 1) > 2:
+                    random.shuffle(self.players_list[i:j + 1])
+                i = j + 1
+
         matches = []
-        for i in range(0, len(self.players_list), 2):
-            if i + 1 < len(self.players_list):
-                match = Match(self.players_list[i], self.players_list[i+1])
-                matches.append(match)
+        i = 0
+        while i < len(self.players_list) -1:
+            player1 = self.players_list[i]
+            player2 = None
+
+            # Cherche un adversaire qui n'a pas déjà joué contre player1
+            for j in range(i + 1, len(self.players_list)):
+                potential_opponent = self.players_list[j]
+                if not self.has_played_before(player1, potential_opponent):
+                    player2 = potential_opponent
+                    break
+
+            # Si on a trouvé un adversaire valide
+            if player2:
+                match_id = f"{self.name}_match_{i + 1}"
+                matches.append(Match(match_id, player1, player2))
+                self.players_list.remove(player2)
+            else:
+                # Pas d'adversaire disponible (cas improbable mais à gérer)
+                match_id = f"{self.name}_match_{i + 1}"
+                matches.append(Match(match_id, player1, self.players_list[i+1]))
+            i += 1
+
         self.matches = matches
-        # Reste à ajouter une fonction qui teste si nos paires se sont déjà rencontrées
         return matches
 
+    def has_played_before(self, player1, player2):
+        for match in self.previous_matches:
+            if (match.player1 == player1 and match.player2 == player2) or \
+               (match.player1 == player2 and match.player2 == player1):
+                return True
+        return False
+
     def __str__(self):
-        return f"Turn: {self.name}, Matches: {[str(match) for Match.match in self.matches]}"
+        return f"Turn: {self.name}, Matches: {[str(match) for match in self.matches]}"
 
 
 blunt_roger_1982 = Player("blunt", "roger", 1982)
 doe_john_2001 = Player("doe", "john", 2001)
 muller_jeremy_1992 = Player("muller", "jeremy", 1992)
 jeanssone_thomas_1993 = Player("jeanssone", "thomas", 1993)
+muller_ivan_1997 = Player("muller", "ivan", 1997)
+jeanssone_theo_1997 = Player("jeanssone", "theo", 1997)
+truc_laura_2001 = Player("truc", "laura", 2001)
+muller_eris_2023 = Player("muller", "eris", 2023)
 
 tournoi_test = Tournament("Test", "taverny", 25072024, "on s'éclate en python!")
 
@@ -131,6 +167,10 @@ tournoi_test.add_player(blunt_roger_1982)
 tournoi_test.add_player(doe_john_2001)
 tournoi_test.add_player(jeanssone_thomas_1993)
 tournoi_test.add_player(muller_jeremy_1992)
+tournoi_test.add_player(muller_ivan_1997)
+tournoi_test.add_player(jeanssone_theo_1997)
+tournoi_test.add_player(truc_laura_2001)
+tournoi_test.add_player(muller_eris_2023)
 
 print(str(tournoi_test))
 
@@ -138,20 +178,21 @@ blunt_roger_1982.add_national_chess_number("AB12345")
 
 print(blunt_roger_1982.national_chess_number)
 
-round1 = Turn("round1", [doe_john_2001, blunt_roger_1982, muller_jeremy_1992, jeanssone_thomas_1993])
 
-tournoi_test.add_turn(round1)
-
-print(str(tournoi_test))
-
-print(str(doe_john_2001))
-
-print(str(blunt_roger_1982))
-
-round1.match_making()
-
+round_1 = tournoi_test.create_turn("round_1")
+matches = round_1.generate_matches()
 print("\nMatches in Round 1:")
-for match in round1.matches:
-    print(f"{match.player1.first_name} {match.player1.family_name} vs "
+for match in matches:
+    print(f"{match.match_id} : {match.player1.first_name} {match.player1.family_name} vs "
           f"{match.player2.first_name} {match.player2.family_name}")
 
+muller_jeremy_1992.points = 1
+blunt_roger_1982.points = -1
+muller_eris_2023.points = 1
+jeanssone_thomas_1993.points = -1
+doe_john_2001.points = 1
+jeanssone_theo_1997.points = -1
+truc_laura_2001.points = -1
+muller_ivan_1997 = 1
+
+print(tournoi_test.players_list)
