@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Avancée sur la vue, différentes fonctions testées, problème apparent sur la players_list à régler ultérieurement.">
+    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Début d'implémentation du controler, reste à confronter l'ensemble pour identifier les manques et erreurs éventuels">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controler.py" beforeDir="false" afterPath="$PROJECT_DIR$/controler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/views.py" afterDir="false" />
@@ -33,18 +33,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.models.executor": "Run",
-    "Python.quizz.executor": "Run",
-    "Python.views.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Jérémy/OCS/Exos/Exercice",
-    "settings.editor.selected.configurable": "vcs.Git"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.controler.executor&quot;: &quot;Run&quot;,
+    &quot;Python.models.executor&quot;: &quot;Run&quot;,
+    &quot;Python.quizz.executor&quot;: &quot;Run&quot;,
+    &quot;Python.views.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Jérémy/OCS/Exos/Exercice&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -157,7 +158,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722596694540</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Début d'implémentation du controler, reste à confronter l'ensemble pour identifier les manques et erreurs éventuels">
+      <option name="closed" value="true" />
+      <created>1722611216384</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1722611216384</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -181,10 +190,27 @@
     <MESSAGE value="Pas de changement majeurs, matchmaking toujours non fonctionnel, problème de liens entre les données. Idée d'ajouter un décorateur, réflexions autour de l'héritage, ajouts de 2 joueurs. A poursuivre." />
     <MESSAGE value="Tests concluants pour la fonction match_making corrigée, ajout d'un décorateur qui est à finaliser." />
     <MESSAGE value="Avancée sur la vue, différentes fonctions testées, problème apparent sur la players_list à régler ultérieurement." />
-    <option name="LAST_COMMIT_MESSAGE" value="Avancée sur la vue, différentes fonctions testées, problème apparent sur la players_list à régler ultérieurement." />
+    <MESSAGE value="Début d'implémentation du controler, reste à confronter l'ensemble pour identifier les manques et erreurs éventuels" />
+    <option name="LAST_COMMIT_MESSAGE" value="Début d'implémentation du controler, reste à confronter l'ensemble pour identifier les manques et erreurs éventuels" />
   </component>
   <component name="WfRunsListSearchHistory"><![CDATA[{
   "history": [
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
     {
       "branch": "master",
       "currentBranchFilter": true

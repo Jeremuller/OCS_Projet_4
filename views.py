@@ -23,7 +23,8 @@ class TournamentView:
         print("4. Afficher les joueurs enregistrés")
         print("5. Afficher les autres tournois enregistrés")
         print("6. Retour au menu principal")
-        print("Veuillez entrer le chiffre correspondant à votre requête")
+        main_menu_choice = input("Veuillez entrer le chiffre correspondant à votre requête: ")
+        return main_menu_choice
 
     @staticmethod
     def display_tournament_infos(tournament):
@@ -50,4 +51,21 @@ class TournamentView:
         print("\nRésultats des matchs: ")
         for match in matches:
             print(f"{match.player1} vs {match.player2} ->> vainqueur: {match.result}")
+
+    @staticmethod
+    def get_player_informations():
+        print("Veuillez entrer les informations du joueurs que vous souhaitez inscrire")
+        family_name = input("Nom: ")
+        first_name = input("Prénom: ")
+        date_of_birth = input("Date de naissance (format JJMMAAAA): ")
+        return family_name, first_name, date_of_birth
+
+    @staticmethod
+    def get_tournament_informations():
+        print("Veuillez entrer les informations du tournoi à créer")
+        name = input("Nom: ")
+        location = input("Lieu: ")
+        date = input("Date (format JJMMAAAA) : ")
+        description = input("Description: ")
+        return name, location, date, description
 
