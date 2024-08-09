@@ -12,7 +12,8 @@ class TournamentView:
         print("3. Démarrer le tournoi")
         print("4. Afficher informations")
         print("5. Quitter")
-        print("Veuillez entrer le chiffre correspondant à votre requête")
+        main_menu_choice = input("Veuillez entrer le chiffre correspondant à votre requête: ")
+        return main_menu_choice
 
     @staticmethod
     def display_informations_menu():
@@ -23,8 +24,8 @@ class TournamentView:
         print("4. Afficher les joueurs enregistrés")
         print("5. Afficher les autres tournois enregistrés")
         print("6. Retour au menu principal")
-        main_menu_choice = input("Veuillez entrer le chiffre correspondant à votre requête: ")
-        return main_menu_choice
+        informations_menu_choice = input("Veuillez entrer le chiffre correspondant à votre requête: ")
+        return informations_menu_choice
 
     @staticmethod
     def display_tournament_infos(tournament):
@@ -32,10 +33,10 @@ class TournamentView:
         print(f"Date: {tournament.date}")
 
     @staticmethod
-    def display_players(tournament):
-        tournament.players_list.sort(key=lambda player: (player.family_name, player.first_name))
+    def display_players(players_list):
+        players_list.sort(key=lambda player: (player.family_name, player.first_name))
         print("\nListe des joueurs:")
-        for player in tournament.players_list:
+        for player in players_list:
             print(f"{player.family_name} {player.first_name}")
 
     @staticmethod

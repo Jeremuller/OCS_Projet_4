@@ -15,7 +15,7 @@ class Player:
     def add_national_chess_number(self, national_chess_number):
         self.national_chess_number = national_chess_number
 
-    def __str__(self):
+    def __repr__(self):
         return f"{self.family_name} {self.first_name}, ID: {self.national_chess_number}, Points: {self.points}"
 
 
@@ -116,7 +116,7 @@ class Turn:
 
         matches = []
         i = 0
-        while i < len(self.players_list) -1:
+        while i < len(self.players_list) - 1: 
             player1 = self.players_list[i]
             player2 = None
 
@@ -150,49 +150,3 @@ class Turn:
 
     def __str__(self):
         return f"Turn: {self.name}, Matches: {[str(match) for match in self.matches]}"
-
-
-blunt_roger_1982 = Player("blunt", "roger", 1982)
-doe_john_2001 = Player("doe", "john", 2001)
-muller_jeremy_1992 = Player("muller", "jeremy", 1992)
-jeanssone_thomas_1993 = Player("jeanssone", "thomas", 1993)
-muller_ivan_1997 = Player("muller", "ivan", 1997)
-jeanssone_theo_1997 = Player("jeanssone", "theo", 1997)
-truc_laura_2001 = Player("truc", "laura", 2001)
-muller_eris_2023 = Player("muller", "eris", 2023)
-
-tournoi_test = Tournament("Test", "taverny", 25072024, "on s'éclate en python!")
-
-tournoi_test.add_player(blunt_roger_1982)
-tournoi_test.add_player(doe_john_2001)
-tournoi_test.add_player(jeanssone_thomas_1993)
-tournoi_test.add_player(muller_jeremy_1992)
-tournoi_test.add_player(muller_ivan_1997)
-tournoi_test.add_player(jeanssone_theo_1997)
-tournoi_test.add_player(truc_laura_2001)
-tournoi_test.add_player(muller_eris_2023)
-
-print(str(tournoi_test))
-
-blunt_roger_1982.add_national_chess_number("AB12345")
-
-print(blunt_roger_1982.national_chess_number)
-
-
-round_1 = tournoi_test.create_turn("round_1")
-matches = round_1.generate_matches()
-print("\nMatches in Round 1:")
-for match in matches:
-    print(f"{match.match_id} : {match.player1.first_name} {match.player1.family_name} vs "
-          f"{match.player2.first_name} {match.player2.family_name}")
-
-muller_jeremy_1992.points = 1
-blunt_roger_1982.points = -1
-muller_eris_2023.points = 1
-jeanssone_thomas_1993.points = -1
-doe_john_2001.points = 1
-jeanssone_theo_1997.points = -1
-truc_laura_2001.points = -1
-muller_ivan_1997 = 1
-
-print(tournoi_test.players_list)
