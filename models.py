@@ -46,7 +46,7 @@ class Tournament:
         self.players_list.append(player)
 
     def create_turn(self, name):
-        if self.actual_turn_number >= self.number_of_turns:
+        if self.actual_turn_number > self.number_of_turns:
             raise FinishedTournamentException("Le tournoi est terminé, aucun match ne peut être joué")
         turn = Turn(name, self.players_list)
         self.turns_list.append(turn)
@@ -68,20 +68,10 @@ class Match:
         self.match_id = match_id
         self.result = None
 
-    def match_result(self, result):
-        if result == self.player1:
-            self.player1.points += 1
-            self.player2.points -= 1
-        elif result == self.player2:
-            self.player2.points += 1
-            self.player1.points -= 1
-        elif result == "draw":
-            self.player1.points += 0.5
-            self.player2.points += 0.5
-        else:
-            raise IncorrectMatchResultException(
-                "Le résultat doit impérativement comporter le nom du joueur1 du joueur2, ou 'draw'")
-        self.result = result
+    def update_players_points(self, player1_score, player2_score):
+        self.result = (player1_score, player2_score)
+        self.player1.points += player1_score
+        self.player2.points += player2_score
 
     def __str__(self):
         return f"{self.match_id}: {self.player1} vs {self.player2}, Result: {self.result}"

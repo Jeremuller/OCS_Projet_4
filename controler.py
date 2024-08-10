@@ -90,6 +90,11 @@ class TournamentController:
             else:
                 print("Choix invalide, veuillez entre le chiffre correspondant à votre requête")
 
+    def process_match_results(self, matches):
+        for match in matches:
+            score_player1, score_player2 = TournamentView.get_match_results(match)
+            match.update_players_points(score_player1, score_player2)
+
 
 # Point d'entrée du programme
 if __name__ == "__main__":
