@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="update, ajout d'une fonction de vérification, logique de controle du menu secondaire, et début du débugage">
+    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Refactoring de la gestions des résultats des matchs en MVC, tests à finaliser.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controler.py" beforeDir="false" afterPath="$PROJECT_DIR$/controler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
@@ -183,7 +183,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723223718075</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Refactoring de la gestions des résultats des matchs en MVC, tests à finaliser.">
+      <option name="closed" value="true" />
+      <created>1723284685997</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1723284685997</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -210,10 +218,19 @@
     <MESSAGE value="Début d'implémentation du controler, reste à confronter l'ensemble pour identifier les manques et erreurs éventuels" />
     <MESSAGE value="Update en vue de la session mentorat" />
     <MESSAGE value="update, ajout d'une fonction de vérification, logique de controle du menu secondaire, et début du débugage" />
-    <option name="LAST_COMMIT_MESSAGE" value="update, ajout d'une fonction de vérification, logique de controle du menu secondaire, et début du débugage" />
+    <MESSAGE value="Refactoring de la gestions des résultats des matchs en MVC, tests à finaliser." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactoring de la gestions des résultats des matchs en MVC, tests à finaliser." />
   </component>
   <component name="WfRunsListSearchHistory"><![CDATA[{
   "history": [
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
     {
       "branch": "master",
       "currentBranchFilter": true

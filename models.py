@@ -46,11 +46,8 @@ class Tournament:
         self.players_list.append(player)
 
     def create_turn(self, name):
-        if self.actual_turn_number > self.number_of_turns:
-            raise FinishedTournamentException("Le tournoi est terminé, aucun match ne peut être joué")
         turn = Turn(name, self.players_list)
         self.turns_list.append(turn)
-        self.actual_turn_number += 1
         return turn
 
     def __str__(self):

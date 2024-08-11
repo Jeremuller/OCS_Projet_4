@@ -20,7 +20,7 @@ class TournamentController:
             elif main_menu_choice == "2":
                 self.add_player()
             elif main_menu_choice == "3":
-                self.start_tournament()
+                self.run_tournament()
             elif main_menu_choice == "4":
                 TournamentView.display_informations_menu()
             elif main_menu_choice == "5":
@@ -49,14 +49,41 @@ class TournamentController:
         else:
             print("Il n'y a pas de tournoi en cours")
 
-    def start_tournament(self):
+    def run_tournament(self):
+        # On vérifie d'abord qu'un tournoi a été crée et qu'il comporte des joueurs
         if self.tournament_in_progress():
             if not self.tournament.players_list:
                 print("Le tournoi n'a aucun joueur!")
                 return
-            turn = self.tournament.create_turn(f"round_{self.tournament.actual_turn_number + 1}")
-            matches = turn.generate_matches()
-            TournamentView.display_match_results(matches)
+
+            # Contrôle que le tournoi n'est pas encore terminé
+            while self.tournament.actual_turn_number < self.tournament.number_of_turns:
+                print(f"Début du tour {self.tournament.actual_turn_number + 1}/{self.tournament.number_of_turns}")
+
+                # Générer les matchs
+                turn = self.tournament.create_turn(f"round_{self.tournament.actual_turn_number + 1}")
+                matches = turn.generate_matches()
+
+                # Saisie des résultats des matchs
+                self.process_match_results(matches)
+
+                # Demander à l'utilisateur s'il souhaite continuer
+                while True:
+                    continue_choice = input("Souhaitez vous passer au tour suivant ? (oui/non): ").lower()
+                    if continue_choice == "non":
+                        confirm_exit = input("Êtes vous sûr de vouloir quitter le tournoi? "
+                                             "Cela supprimera le tournoi en cours. (oui/non): ").lower()
+                        if confirm_exit == "oui":
+                            print("Tournoi interrompu")
+                            return
+                        else:
+                            print("Retour au tournoi.")
+                            break
+                    elif continue_choice == "oui":
+                        self.tournament.actual_turn_number += 1
+                        break
+                    else:
+                        print("Choix invalide, veuillez entrer \"oui\" ou \"non\".")
 
     def informations_menu(self):
         while True:

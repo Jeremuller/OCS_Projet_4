@@ -73,12 +73,14 @@ class TournamentView:
     @staticmethod
     def get_match_results(match):
         while True:
-            print(f"Match: {match.player1.name} vs {match.player2.name}")
-            result = input(f"Entrez le nom du gagnant du match, ou indiquer \"draw\" en cas d'égalité").lower()
+            print(f"Match: {match.player1.family_name} {match.player1.first_name} vs "
+                  f"{match.player2.family_name} {match.player2.first_name}")
+            result = input(f"Le joueur {match.player1.family_name} {match.player1.first_name} "
+                           f"a t'il gagné? (oui/non/draw en cas d'égalité): ").lower()
 
-            if result == match.player1.name:
+            if result == "oui":
                 return 1, 0
-            elif result == match.player2.name:
+            elif result == "non":
                 return 0, 1
             elif result == "draw":
                 return 0.5, 0.5
