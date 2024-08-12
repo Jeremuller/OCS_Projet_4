@@ -86,30 +86,34 @@ class Turn:
 
     # Déclaration d'une fonction qui va définir les matchs pour un nouveau tour
     def generate_matches(self):
+
+        # Crée une copie de la liste de joueurs
+        playing_players = self.players_list.copy()
+
         if self.name == "round_1":
             # Mélange les joueurs aléatoirement pour le premier tour
-            random.shuffle(self.players_list)
+            random.shuffle(playing_players)
         else:
             #  Tri de la liste de joueurs en fonction de leur nombre de points
-            self.players_list.sort(key=lambda player: player.points, reverse=True)
+            playing_players.sort(key=lambda player: player.points, reverse=True)
             i = 0
-            while i < len(self.players_list) - 1:
+            while i < len(playing_players) - 1:
                 j = i
-                while j < len(self.players_list) - 1 and self.players_list[j].points == self.players_list[j + 1].points:
+                while j < len(playing_players) - 1 and playing_players[j].points == playing_players[j + 1].points:
                     j += 1
                 if j > i and (j - i + 1) > 2:
-                    random.shuffle(self.players_list[i:j + 1])
+                    random.shuffle(playing_players[i:j + 1])
                 i = j + 1
 
         matches = []
         i = 0
-        while i < len(self.players_list) - 1: 
-            player1 = self.players_list[i]
+        while i < len(playing_players) - 1:
+            player1 = playing_players[i]
             player2 = None
 
             # Cherche un adversaire qui n'a pas déjà joué contre player1
-            for j in range(i + 1, len(self.players_list)):
-                potential_opponent = self.players_list[j]
+            for j in range(i + 1, len(playing_players)):
+                potential_opponent = playing_players[j]
                 if not self.has_played_before(player1, potential_opponent):
                     player2 = potential_opponent
                     break
@@ -118,11 +122,11 @@ class Turn:
             if player2:
                 match_id = f"{self.name}_match_{i + 1}"
                 matches.append(Match(match_id, player1, player2))
-                self.players_list.remove(player2)
+                playing_players.remove(player2)
             else:
                 # Pas d'adversaire disponible (cas improbable mais à gérer)
                 match_id = f"{self.name}_match_{i + 1}"
-                matches.append(Match(match_id, player1, self.players_list[i+1]))
+                matches.append(Match(match_id, player1, playing_players[i + 1]))
             i += 1
 
         self.matches = matches
