@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Update, avancement dans la logique de cheminement du programme, matchmaking toujours problèmatique, mais le reste du tournoi semble opérationnel, fiw du matchmaking à venir.">
+    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Update, matchmaking,premier test à 4 joueurs concluants">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controler.py" beforeDir="false" afterPath="$PROJECT_DIR$/controler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,7 +199,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723406828871</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Update, matchmaking,premier test à 4 joueurs concluants">
+      <option name="closed" value="true" />
+      <created>1723464084550</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1723464084550</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -226,10 +236,19 @@
     <MESSAGE value="update, ajout d'une fonction de vérification, logique de controle du menu secondaire, et début du débugage" />
     <MESSAGE value="Refactoring de la gestions des résultats des matchs en MVC, tests à finaliser." />
     <MESSAGE value="Update, avancement dans la logique de cheminement du programme, matchmaking toujours problèmatique, mais le reste du tournoi semble opérationnel, fiw du matchmaking à venir." />
-    <option name="LAST_COMMIT_MESSAGE" value="Update, avancement dans la logique de cheminement du programme, matchmaking toujours problèmatique, mais le reste du tournoi semble opérationnel, fiw du matchmaking à venir." />
+    <MESSAGE value="Update, matchmaking,premier test à 4 joueurs concluants" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update, matchmaking,premier test à 4 joueurs concluants" />
   </component>
   <component name="WfRunsListSearchHistory"><![CDATA[{
   "history": [
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
     {
       "branch": "master",
       "currentBranchFilter": true

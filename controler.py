@@ -85,6 +85,12 @@ class TournamentController:
                     else:
                         print("Choix invalide, veuillez entrer \"oui\" ou \"non\".")
 
+            # Message de fin de tournoi avec affichage des participants et leurs scores
+            print("\nTournoi terminé! Voici le récapitulatif des scores: ")
+            sorted_players = sorted(self.tournament.players_list, key=lambda player: player.points, reverse=True)
+            for player in sorted_players:
+                print(f"Joueur : {player.first_name} {player.family_name} - Points : {player.points}")
+
     def informations_menu(self):
         while True:
             informations_menu_choice = TournamentView.display_menu()

@@ -12,6 +12,18 @@ class Player:
         self.points = points
         self.national_chess_number = None
 
+    def serialisation_to_dict(self):
+        return {
+            "first_name": self.first_name,
+            "family_name": self.family_name,
+            "date_of_birth": self.date_of_birth,
+            "national_chess_number": self.national_chess_number
+        }
+
+    @classmethod
+    def deserialisation_from_dict(cls, data):
+        return cls(data["first_name"], data["family_name"], data["date_of_birth"], data["national_chess_number"])
+
     def add_national_chess_number(self, national_chess_number):
         self.national_chess_number = national_chess_number
 
@@ -54,6 +66,22 @@ class Tournament:
         return (f"Tournament: {self.name}, Location: {self.location}, Date: {self.date}, "
                 f"Description: {self.description}, Current Turn: {self.actual_turn_number}/{self.number_of_turns}")
 
+    def serialisation_to_dict(self):
+        return {
+            "name": self.name,
+            "location": self.location,
+            "number_of_turns": self.number_of_turns,
+            "players_list": [player.serialisation_to_dict() for player in self.players_list],
+            "turns_list": [turn.serialisation_to_dict() for turn in self.turns_list]
+        }
+
+    @classmethod
+    def deserialisation_from_dict(cls, data):
+        players_list = [Player.deserialisation_from_dict(player_data) for player_data in data["players_list"]]
+        tournament = cls(data["name"], data["location"], data["number_of_turns"], players_list)
+        tournament.turns_list = [Turn.deserialisation_from_dict(turn_data) for turn_data in data["turns_list"]]
+        return tournament
+
 
 class Match:
 
@@ -69,6 +97,20 @@ class Match:
         self.result = (player1_score, player2_score)
         self.player1.points += player1_score
         self.player2.points += player2_score
+
+    def serialisation_to_dict(self):
+        return {
+            "match_id": self.match_id,
+            "player1": self.player1.serialisation_to_dict(),
+            "player2": self.player2.serialisation_to_dict(),
+            "result": self.result
+        }
+
+    @classmethod
+    def deserialisation_from_dict(cls, data):
+        player1 = Player.deserialisation_from_dict(data["player1"])
+        player2 = Player.deserialisation_from_dict(data["player2"])
+        return cls(data["match_id"], player1, player2, data["result"])
 
     def __str__(self):
         return f"{self.match_id}: {self.player1} vs {self.player2}, Result: {self.result}"
@@ -138,6 +180,20 @@ class Turn:
                (match.player1 == player2 and match.player2 == player1):
                 return True
         return False
+
+    def serialisation_to_dict(self):
+        return {
+            "name": self.name,
+            "players_list": [player.serialisation_to_dict() for player in self.players_list],
+            "matches": [match.serialisation_to_dict() for match in self.matches]
+        }
+
+    @classmethod
+    def deserialisation_from_dict(cls, data):
+        players_list = [Player.deserialisation_from_dict(player_data) for player_data in data["players_list"]]
+        turn = cls(data["name"], players_list)
+        turn.matches = [Match.deserialisation_from_dict(match_data) for match_data in data["matches"]]
+        return turn
 
     def __str__(self):
         return f"Turn: {self.name}, Matches: {[str(match) for match in self.matches]}"

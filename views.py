@@ -1,3 +1,6 @@
+from models import Player, Turn
+
+
 class TournamentView:
 
     @staticmethod
@@ -26,6 +29,17 @@ class TournamentView:
         print("6. Retour au menu principal")
         informations_menu_choice = input("Veuillez entrer le chiffre correspondant à votre requête: ")
         return informations_menu_choice
+
+    # Gestion des données
+    @staticmethod
+    def load_players_data():
+        players_data = Player.deserialisation_from_dict("players_list.json")
+        return players_data
+
+    @staticmethod
+    def load_turns_data():
+        turns_data = Turn.serialisation_to_dict("turns_list.json")
+        return turns_data
 
     @staticmethod
     def display_tournament_infos(tournament):
@@ -86,5 +100,3 @@ class TournamentView:
                 return 0.5, 0.5
             else:
                 print("Résultat invalide, veuillez entrer le nom du gagnant, ou \"draw\" en cas d'égalité")
-
-
