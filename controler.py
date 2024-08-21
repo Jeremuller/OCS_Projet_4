@@ -1,5 +1,7 @@
 from views import TournamentView
 from models import Tournament, Player
+import json
+import os
 
 
 class TournamentController:
@@ -43,7 +45,7 @@ class TournamentController:
     def add_player(self):
         if self.tournament_in_progress():
             family_name, first_name, date_of_birth = TournamentView.get_player_informations()
-            player = Player(family_name, first_name, date_of_birth)
+            player = Player(family_name, first_name, date_of_birth, points=0)
             self.tournament.add_player(player)
             TournamentView.display_players(self.tournament.players_list)
         else:
@@ -127,6 +129,43 @@ class TournamentController:
         for match in matches:
             score_player1, score_player2 = TournamentView.get_match_results(match)
             match.update_players_points(score_player1, score_player2)
+
+
+class PlayerController:
+
+    @staticmethod
+    def display_sorted_players():
+        players_list = Player.load_from_json(file_path="test.json")
+        sorted_players_list = sorted(players_list, key=lambda player: player.family_name)
+        TournamentView.display_players(sorted_players_list)
+
+
+def integration_test():
+
+    players_list = [
+        Player(first_name="Magnus", family_name="Carlsen", date_of_birth="30111990"),
+        Player(first_name="Hikaru", family_name="Nakamura", date_of_birth="09121987"),
+        Player(first_name="Fabiano", family_name="Caruana", date_of_birth="30111992"),
+        Player(first_name="Ian", family_name="Nepomniachtchi", date_of_birth="14071990")
+    ]
+
+    print(str(players_list))
+
+    players_list[0].national_chess_number = "NOR19901130"
+    players_list[1].national_chess_number = "USA19871209"
+    players_list[2].national_chess_number = "USA19921130"
+    players_list[3].national_chess_number = "RUS19900714"
+
+    test_file = "test.json"
+    with open(test_file, "w") as file:
+        json.dump([player.serialisation_to_dict() for player in players_list], file)
+
+    PlayerController.display_sorted_players()
+    os.remove(test_file)
+
+    print("test réussi")
+
+integration_test()
 
 
 # Point d'entrée du programme

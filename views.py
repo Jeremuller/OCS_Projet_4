@@ -1,4 +1,4 @@
-from models import Player, Turn
+from models import Turn
 
 
 class TournamentView:
@@ -30,12 +30,6 @@ class TournamentView:
         informations_menu_choice = input("Veuillez entrer le chiffre correspondant à votre requête: ")
         return informations_menu_choice
 
-    # Gestion des données
-    @staticmethod
-    def load_players_data():
-        players_data = Player.deserialisation_from_dict("players_list.json")
-        return players_data
-
     @staticmethod
     def load_turns_data():
         turns_data = Turn.serialisation_to_dict("turns_list.json")
@@ -47,11 +41,11 @@ class TournamentView:
         print(f"Date: {tournament.date}")
 
     @staticmethod
-    def display_players(players_list):
-        players_list.sort(key=lambda player: (player.family_name, player.first_name))
+    def display_players(sorted_players_list):
         print("\nListe des joueurs:")
-        for player in players_list:
-            print(f"{player.family_name} {player.first_name}")
+        for player in sorted_players_list:
+            print(f"{player.family_name} {player.first_name} "
+                  f"born {player.date_of_birth} ID {player.national_chess_number}")
 
     @staticmethod
     def display_tournament_turns(tournament):

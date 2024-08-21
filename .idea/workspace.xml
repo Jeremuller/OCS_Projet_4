@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Update, matchmaking,premier test à 4 joueurs concluants">
+    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Matchmaking validé, premières implémentations pour la sérialisation et désérialisation de données dans le modèle.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controler.py" beforeDir="false" afterPath="$PROJECT_DIR$/controler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
@@ -24,6 +24,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -207,7 +210,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723464084550</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Matchmaking validé, premières implémentations pour la sérialisation et désérialisation de données dans le modèle.">
+      <option name="closed" value="true" />
+      <created>1723546660164</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1723546660164</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -237,10 +248,27 @@
     <MESSAGE value="Refactoring de la gestions des résultats des matchs en MVC, tests à finaliser." />
     <MESSAGE value="Update, avancement dans la logique de cheminement du programme, matchmaking toujours problèmatique, mais le reste du tournoi semble opérationnel, fiw du matchmaking à venir." />
     <MESSAGE value="Update, matchmaking,premier test à 4 joueurs concluants" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update, matchmaking,premier test à 4 joueurs concluants" />
+    <MESSAGE value="Matchmaking validé, premières implémentations pour la sérialisation et désérialisation de données dans le modèle." />
+    <option name="LAST_COMMIT_MESSAGE" value="Matchmaking validé, premières implémentations pour la sérialisation et désérialisation de données dans le modèle." />
   </component>
   <component name="WfRunsListSearchHistory"><![CDATA[{
   "history": [
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
     {
       "branch": "master",
       "currentBranchFilter": true

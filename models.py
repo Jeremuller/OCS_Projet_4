@@ -1,4 +1,6 @@
 import random
+import json
+import os
 
 
 class Player:
@@ -20,15 +22,36 @@ class Player:
             "national_chess_number": self.national_chess_number
         }
 
+    def save_to_json(self, file_path):
+        with open(file_path, "w") as file:
+            json.dump(self.serialisation_to_dict(), file)
+
     @classmethod
     def deserialisation_from_dict(cls, data):
-        return cls(data["first_name"], data["family_name"], data["date_of_birth"], data["national_chess_number"])
+        player = cls(
+            family_name=data["family_name"],
+            first_name=data["first_name"],
+            date_of_birth=data["date_of_birth"],
+        )
+        player.national_chess_number = data.get("national_chess_number")
+        return player
+
+    @classmethod
+    def load_from_json(cls, file_path):
+        with open(file_path, "r") as file:
+            data = json.load(file)
+
+        if isinstance(data, list):
+            return [cls.deserialisation_from_dict(player_data) for player_data in data]
+        else:
+            return cls.deserialisation_from_dict(data)
 
     def add_national_chess_number(self, national_chess_number):
         self.national_chess_number = national_chess_number
 
     def __repr__(self):
-        return f"{self.family_name} {self.first_name}, ID: {self.national_chess_number}, Points: {self.points}"
+        return (f"{self.family_name} {self.first_name}, born: {self.date_of_birth} "
+                f"ID: {self.national_chess_number}, Points: {self.points}")
 
 
 class FinishedTournamentException(Exception):
@@ -197,3 +220,5 @@ class Turn:
 
     def __str__(self):
         return f"Turn: {self.name}, Matches: {[str(match) for match in self.matches]}"
+
+
