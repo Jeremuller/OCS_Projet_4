@@ -3,6 +3,21 @@ import json
 import os
 
 
+def load_from_json(cls, file_path):
+    with open(file_path, "r") as file:
+        data = json.load(file)
+
+    if isinstance(data, list):
+        return [cls.deserialisation_from_dict(player_data) for player_data in data]
+    else:
+        return cls.deserialisation_from_dict(data)
+
+
+def save_to_json(self, file_path):
+    with open(file_path, "w") as file:
+        json.dump(self.serialisation_to_dict(), file)
+
+
 class Player:
 
     """Déclaration de la classe joueur"""
@@ -22,10 +37,6 @@ class Player:
             "national_chess_number": self.national_chess_number
         }
 
-    def save_to_json(self, file_path):
-        with open(file_path, "w") as file:
-            json.dump(self.serialisation_to_dict(), file)
-
     @classmethod
     def deserialisation_from_dict(cls, data):
         player = cls(
@@ -36,15 +47,6 @@ class Player:
         player.national_chess_number = data.get("national_chess_number")
         return player
 
-    @classmethod
-    def load_from_json(cls, file_path):
-        with open(file_path, "r") as file:
-            data = json.load(file)
-
-        if isinstance(data, list):
-            return [cls.deserialisation_from_dict(player_data) for player_data in data]
-        else:
-            return cls.deserialisation_from_dict(data)
 
     def add_national_chess_number(self, national_chess_number):
         self.national_chess_number = national_chess_number
@@ -104,6 +106,16 @@ class Tournament:
         tournament = cls(data["name"], data["location"], data["number_of_turns"], players_list)
         tournament.turns_list = [Turn.deserialisation_from_dict(turn_data) for turn_data in data["turns_list"]]
         return tournament
+
+    @classmethod
+    def load_archived_tournaments(cls, file_path="archived_tournaments.json"):
+        if not os.path.exists(file_path):
+            return []
+
+        with open(file_path, "r") as file:
+            data = json.load(file)
+
+        return [cls.deserialisation_from_dict(tournament_data) for tournament_data in data]
 
 
 class Match:

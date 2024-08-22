@@ -131,7 +131,7 @@ class TournamentController:
             match.update_players_points(score_player1, score_player2)
 
 
-class PlayerController:
+class InfosControler:
 
     @staticmethod
     def display_sorted_players():
@@ -139,8 +139,19 @@ class PlayerController:
         sorted_players_list = sorted(players_list, key=lambda player: player.family_name)
         TournamentView.display_players(sorted_players_list)
 
+    @staticmethod
+    def display_archived_tournaments():
+        tournaments = Tournament.load_archived_tournaments()
+        if not tournaments:
+            print("Aucun tournoi archivé n'a été trouvé")
+            return
 
-def integration_test():
+        print("\n -- Liste des tournois archivés --")
+        for i, tournament in enumerate(tournaments, start=1):
+            print(f"{i}. {tournament.name} - Date: {tournament.date}")
+
+
+""" def integration_test():
 
     players_list = [
         Player(first_name="Magnus", family_name="Carlsen", date_of_birth="30111990"),
@@ -160,14 +171,23 @@ def integration_test():
     with open(test_file, "w") as file:
         json.dump([player.serialisation_to_dict() for player in players_list], file)
 
-    PlayerController.display_sorted_players()
+    InfosController.display_sorted_players()
     os.remove(test_file)
 
     print("test réussi")
 
-integration_test()
+integration_test() """
 
+@classmethod
+def test_archived_tournaments():
+    tournois = [
+        Tournament(name="Open Hiver", date="25122023", location="Paris", description="youhou"),
+        Tournament(name="Open Summer", date="21062024", location="Paris", description="youhou"),
+        Tournament(name="Open Spring", date="21032024", location="Paris", description="youhou")
+    ]
 
+    for tournoi in tournois:
+        tournoi.
 # Point d'entrée du programme
 if __name__ == "__main__":
     controller = TournamentController()
