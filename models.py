@@ -3,21 +3,6 @@ import json
 import os
 
 
-def load_from_json(cls, file_path):
-    with open(file_path, "r") as file:
-        data = json.load(file)
-
-    if isinstance(data, list):
-        return [cls.deserialisation_from_dict(player_data) for player_data in data]
-    else:
-        return cls.deserialisation_from_dict(data)
-
-
-def save_to_json(self, file_path):
-    with open(file_path, "w") as file:
-        json.dump(self.serialisation_to_dict(), file)
-
-
 class Player:
 
     """Déclaration de la classe joueur"""
@@ -29,24 +14,43 @@ class Player:
         self.points = points
         self.national_chess_number = None
 
-    def serialisation_to_dict(self):
+    def serialize_to_dict(self):
         return {
             "first_name": self.first_name,
             "family_name": self.family_name,
             "date_of_birth": self.date_of_birth,
+            "points": self.points,
             "national_chess_number": self.national_chess_number
         }
 
+    def save_to_json(self, file_path):
+        try:
+            player_data = self.serialize_to_dict()
+            with open(file_path, "w") as file:
+                json.dump(player_data, file, indent=4)
+        except IOError as e:
+            print(f"Failed to save JSON file named: {e}.")
+
     @classmethod
-    def deserialisation_from_dict(cls, data):
+    def deserialize_from_dict(cls, data):
         player = cls(
             family_name=data["family_name"],
             first_name=data["first_name"],
             date_of_birth=data["date_of_birth"],
         )
+        player.points = data.get("points")
         player.national_chess_number = data.get("national_chess_number")
         return player
 
+    @classmethod
+    def load_from_json(cls, file_path):
+        try:
+            with open(file_path, "r") as file:
+                return json.load(file)
+        except IOError as e:
+            print(f"Failed to read JSON file named: {e}")
+        except json.JSONDecodeError as e:
+            print(f"Failed to decode JSON file named: {e}")
 
     def add_national_chess_number(self, national_chess_number):
         self.national_chess_number = national_chess_number
@@ -91,21 +95,51 @@ class Tournament:
         return (f"Tournament: {self.name}, Location: {self.location}, Date: {self.date}, "
                 f"Description: {self.description}, Current Turn: {self.actual_turn_number}/{self.number_of_turns}")
 
-    def serialisation_to_dict(self):
+    def serialize_to_dict(self):
         return {
             "name": self.name,
             "location": self.location,
+            "date": self.date,
+            "description": self.description,
+            "actual_turn_number": self.actual_turn_number,
             "number_of_turns": self.number_of_turns,
-            "players_list": [player.serialisation_to_dict() for player in self.players_list],
-            "turns_list": [turn.serialisation_to_dict() for turn in self.turns_list]
+            "players_list": [player.serialize_to_dict() for player in self.players_list],
+            "turns_list": [turn.serialize_to_dict()for turn in self.turns_list]
         }
 
+    def save_to_json(self, file_path):
+        data_to_save = self.serialize_to_dict()
+        try:
+            with open(file_path, "w") as file:
+                json.dump(data_to_save, file, indent=4)
+        except IOError as e:
+            print(f"Failed to save JSON file named: {e}")
+
     @classmethod
-    def deserialisation_from_dict(cls, data):
-        players_list = [Player.deserialisation_from_dict(player_data) for player_data in data["players_list"]]
-        tournament = cls(data["name"], data["location"], data["number_of_turns"], players_list)
-        tournament.turns_list = [Turn.deserialisation_from_dict(turn_data) for turn_data in data["turns_list"]]
+    def deserialize_from_dict(cls, data):
+        tournament = cls(
+            name=data["name"],
+            location=data["location"],
+            date=data["date"],
+            description=data["description"],
+            actual_turn_number=data["actual_turn_number"],
+            number_of_turns=data["number_of_turns"],
+        )
+        tournament.players_list = [Player.deserialize_from_dict(player_data)
+                                   for player_data in data.get("players_list", [])]
+        tournament.turns_list = [Turn.deserialize_from_dict(turn_data) for turn_data in data.get("turns_list", [])]
         return tournament
+
+    @classmethod
+    def load_from_json(cls, file_path):
+        try:
+            with open(file_path, "r") as file:
+                data = json.load(file)
+                return data
+        except IOError as e:
+            print(f"Failed to read JSON file named: {e}")
+        except json.JSONDecodeError as e:
+            print(f"Failed do decode JSON file named: {e}")
 
     @classmethod
     def load_archived_tournaments(cls, file_path="archived_tournaments.json"):
@@ -115,7 +149,7 @@ class Tournament:
         with open(file_path, "r") as file:
             data = json.load(file)
 
-        return [cls.deserialisation_from_dict(tournament_data) for tournament_data in data]
+        return [cls.deserialize_from_dict(tournament_data) for tournament_data in data]
 
 
 class Match:
@@ -133,19 +167,41 @@ class Match:
         self.player1.points += player1_score
         self.player2.points += player2_score
 
-    def serialisation_to_dict(self):
+    def serialize_to_dict(self):
         return {
             "match_id": self.match_id,
-            "player1": self.player1.serialisation_to_dict(),
-            "player2": self.player2.serialisation_to_dict(),
+            "player1": self.player1.serialize_to_dict(),
+            "player2": self.player2.serialize_to_dict(),
             "result": self.result
         }
 
+    def save_to_json(self, file_path):
+        try:
+            match_data = self.serialize_to_dict()
+
+            with open(file_path, "w") as file:
+                json.dump(match_data, file, indent=4)
+        except IOError as e:
+            print(f"Failed to save JSON file named: {e}")
+
     @classmethod
-    def deserialisation_from_dict(cls, data):
-        player1 = Player.deserialisation_from_dict(data["player1"])
-        player2 = Player.deserialisation_from_dict(data["player2"])
-        return cls(data["match_id"], player1, player2, data["result"])
+    def deserialize_from_dict(cls, data):
+        player1 = Player.deserialize_from_dict(data["player1"])
+        player2 = Player.deserialize_from_dict(data["player2"])
+        match = cls(data["match_id"], player1, player2)
+        match.result = data["result"]
+        return match
+
+    @classmethod
+    def load_from_json(cls, file_path):
+        try:
+            with open(file_path, "r") as file:
+                data = json.load(file)
+            return cls.deserialize_from_dict(data)
+        except IOError as e:
+            print(f"Erreur lors de la lecture du fichier JSON: {e}")
+        except json.JSONDecodeError as e:
+            print(f"Erreur de décodage du fichier JSON: {e}")
 
     def __str__(self):
         return f"{self.match_id}: {self.player1} vs {self.player2}, Result: {self.result}"
@@ -216,21 +272,37 @@ class Turn:
                 return True
         return False
 
-    def serialisation_to_dict(self):
+    def serialize_to_dict(self):
         return {
             "name": self.name,
-            "players_list": [player.serialisation_to_dict() for player in self.players_list],
-            "matches": [match.serialisation_to_dict() for match in self.matches]
+            "players_list": [player.serialize_to_dict() for player in self.players_list],
+            "matches": [match.serialize_to_dict() for match in self.matches]
         }
 
+    def save_to_json(self, file_path):
+        try:
+            turn_data = self.serialize_to_dict()
+
+            with open(file_path, "w") as file:
+                json.dump(turn_data, file, indent=4)
+        except IOError as e:
+            print(f"Failed to save JSON file named: {e}")
+
     @classmethod
-    def deserialisation_from_dict(cls, data):
-        players_list = [Player.deserialisation_from_dict(player_data) for player_data in data["players_list"]]
+    def deserialize_from_dict(cls, data):
+        players_list = [Player.deserialize_from_dict(player_data) for player_data in data["players_list"]]
         turn = cls(data["name"], players_list)
-        turn.matches = [Match.deserialisation_from_dict(match_data) for match_data in data["matches"]]
+        turn.matches = [Match.deserialize_from_dict(match_data) for match_data in data["matches"]]
         return turn
+
+    @classmethod
+    def load_from_json(cls, file_path):
+        try:
+            with open(file_path, "r") as file:
+                data = json.load(file)
+            return data
+        except json.JSONDecodeError as e:
+            print(f"Failed to decode JSON file name: {e}")
 
     def __str__(self):
         return f"Turn: {self.name}, Matches: {[str(match) for match in self.matches]}"
-
-

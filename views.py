@@ -32,7 +32,7 @@ class TournamentView:
 
     @staticmethod
     def load_turns_data():
-        turns_data = Turn.serialisation_to_dict("turns_list.json")
+        turns_data = Turn.serialize_to_dict("turns_list.json")
         return turns_data
 
     @staticmethod

@@ -131,12 +131,19 @@ class TournamentController:
             match.update_players_points(score_player1, score_player2)
 
 
-class InfosControler:
+class InformationController:
 
     @staticmethod
     def display_sorted_players():
-        players_list = Player.load_from_json(file_path="test.json")
+        loaded_data = Player.load_from_json(file_path="test.json")
+
+        if not isinstance(loaded_data, list):
+            raise TypeError("Loaded data should be a list of dictionaries.")
+
+        players_list = [Player.deserialize_from_dict(data) for data in loaded_data]
+
         sorted_players_list = sorted(players_list, key=lambda player: player.family_name)
+
         TournamentView.display_players(sorted_players_list)
 
     @staticmethod
@@ -151,7 +158,7 @@ class InfosControler:
             print(f"{i}. {tournament.name} - Date: {tournament.date}")
 
 
-""" def integration_test():
+def integration_test():
 
     players_list = [
         Player(first_name="Magnus", family_name="Carlsen", date_of_birth="30111990"),
@@ -160,25 +167,60 @@ class InfosControler:
         Player(first_name="Ian", family_name="Nepomniachtchi", date_of_birth="14071990")
     ]
 
-    print(str(players_list))
-
     players_list[0].national_chess_number = "NOR19901130"
     players_list[1].national_chess_number = "USA19871209"
     players_list[2].national_chess_number = "USA19921130"
     players_list[3].national_chess_number = "RUS19900714"
 
-    test_file = "test.json"
-    with open(test_file, "w") as file:
-        json.dump([player.serialisation_to_dict() for player in players_list], file)
+    print("Initial list of players:")
+    print(str(players_list))
 
-    InfosController.display_sorted_players()
-    os.remove(test_file)
+    tournament = Tournament(
+        name="Grand chess Tournament",
+        location="Paris",
+        date="25082024",
+        description="2024's edition Grand Chess Tournament"
+    )
+
+    for player in players_list:
+        tournament.add_player(player)
+
+    first_turn = tournament.create_turn("Round_1")
+    first_turn.generate_matches()
+
+    print("\nInitial tournament data:")
+    print(tournament)
+
+    test_file = "tournament_test.json"
+    tournament.save_to_json(test_file)
+
+    loaded_data = Tournament.load_from_json(test_file)
+    deserialized_tournament = Tournament.deserialize_from_dict(loaded_data)
+
+    print("\nDesrialized tournament data:")
+    print(deserialized_tournament)
+
+    # data compare
+    print("\nComparaison des joueurs avant et après la déserialisation:")
+    for original_player, deserialized_player in zip(tournament.turns_list, deserialized_tournament.turns_list):
+        print(f"Avant: {original_player}")
+        print(f"Après: {deserialized_player}")
+        print()
+
+    print("\nComparaison des tours avant et après désérialisation:")
+    for original_turn, deserialized_turn in zip(tournament.turns_list, deserialized_tournament.turns_list):
+        print(f"Avant: {original_turn}")
+        print(f"Après: {deserialized_turn}")
+        print()
+
+    os.remove("tournament_test.json")
 
     print("test réussi")
 
-integration_test() """
+integration_test()
 
-@classmethod
+
+"""@classmethod
 def test_archived_tournaments():
     tournois = [
         Tournament(name="Open Hiver", date="25122023", location="Paris", description="youhou"),
@@ -187,7 +229,8 @@ def test_archived_tournaments():
     ]
 
     for tournoi in tournois:
-        tournoi.
+        tournoi."""
+
 # Point d'entrée du programme
 if __name__ == "__main__":
     controller = TournamentController()
