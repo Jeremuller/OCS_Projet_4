@@ -46,6 +46,7 @@ class TournamentController:
         if self.tournament_in_progress():
             family_name, first_name, date_of_birth = TournamentView.get_player_informations()
             player = Player(family_name, first_name, date_of_birth, points=0)
+            player.save_players_to_json("archived.players.json")
             self.tournament.add_player(player)
             TournamentView.display_players(self.tournament.players_list)
         else:
@@ -148,17 +149,43 @@ class InformationController:
 
     @staticmethod
     def display_archived_tournaments():
-        tournaments = Tournament.load_archived_tournaments()
-        if not tournaments:
-            print("Aucun tournoi archivé n'a été trouvé")
+        file_path = "archived_tournaments.json"
+
+        if not os.path.exists("archived_tournaments.json"):
+            print("No file tournament found")
             return
 
-        print("\n -- Liste des tournois archivés --")
-        for i, tournament in enumerate(tournaments, start=1):
-            print(f"{i}. {tournament.name} - Date: {tournament.date}")
+        with open(file_path, "r", encoding="utf-8") as file:
+            try:
+                tournaments_data = json.load(file)
+                if not tournaments_data:
+                    print("No archived tournament found")
+                else:
+                    archived_tournaments = [Tournament.deserialize_from_dict(t) for t in tournaments_data]
+                    print("\n -- Archived tournament list: --")
+                    for i, tournament in enumerate(archived_tournaments, start=1):
+                        print(f"{i}. {tournament.name} - Date: {tournament.date}")
+
+            except json.JSONDecodeError:
+                print("Failed to read JSON file.")
+
+    @staticmethod
+    def test_archived_tournaments():
+        tournaments = [
+            Tournament(name="Open Hiver", date="25122023", location="Paris", description="youhou"),
+            Tournament(name="Open Summer", date="21062024", location="Paris", description="youhou"),
+            Tournament(name="Open Spring", date="21032024", location="Paris", description="youhou")
+        ]
+
+        Tournament.save_all_tournaments_to_json("archived_tournaments.json", tournaments)
+
+    display_archived_tournaments()
 
 
-def integration_test():
+InformationController.test_archived_tournaments()
+
+
+"""def integration_test():
 
     players_list = [
         Player(first_name="Magnus", family_name="Carlsen", date_of_birth="30111990"),
@@ -195,41 +222,26 @@ def integration_test():
     tournament.save_to_json(test_file)
 
     loaded_data = Tournament.load_from_json(test_file)
-    deserialized_tournament = Tournament.deserialize_from_dict(loaded_data)
 
-    print("\nDesrialized tournament data:")
-    print(deserialized_tournament)
+    if isinstance(loaded_data, list):
+        print("loaded_data est une liste.")
+    else:
+        print("loaded_data n'est pas une liste.")
 
-    # data compare
-    print("\nComparaison des joueurs avant et après la déserialisation:")
-    for original_player, deserialized_player in zip(tournament.turns_list, deserialized_tournament.turns_list):
-        print(f"Avant: {original_player}")
-        print(f"Après: {deserialized_player}")
-        print()
+    deserialized_tournaments = [Tournament.deserialize_from_dict(tournament_data) for tournament_data in loaded_data]
 
-    print("\nComparaison des tours avant et après désérialisation:")
-    for original_turn, deserialized_turn in zip(tournament.turns_list, deserialized_tournament.turns_list):
-        print(f"Avant: {original_turn}")
-        print(f"Après: {deserialized_turn}")
-        print()
+    print("\nDeserialized tournament data:")
+    for deserialized_tournament in deserialized_tournaments:
+        print(f"{deserialized_tournament.name} {deserialized_tournament.date} "
+              f"{deserialized_tournament.location} {deserialized_tournament.players_list}")
 
     os.remove("tournament_test.json")
 
     print("test réussi")
 
-integration_test()
 
+integration_test()"""
 
-"""@classmethod
-def test_archived_tournaments():
-    tournois = [
-        Tournament(name="Open Hiver", date="25122023", location="Paris", description="youhou"),
-        Tournament(name="Open Summer", date="21062024", location="Paris", description="youhou"),
-        Tournament(name="Open Spring", date="21032024", location="Paris", description="youhou")
-    ]
-
-    for tournoi in tournois:
-        tournoi."""
 
 # Point d'entrée du programme
 if __name__ == "__main__":

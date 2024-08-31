@@ -23,13 +23,33 @@ class Player:
             "national_chess_number": self.national_chess_number
         }
 
-    def save_to_json(self, file_path):
+    def save_players_to_json(self, file_path):
         try:
+            if os.path.exists(file_path):
+                with open(file_path, "r", encoding="utf-8") as file:
+                    try:
+                        players_data = json.load(file)
+                        if not isinstance(players_data, list):
+                            players_data = [players_data]
+                    except json.JSONDecodeError:
+                        players_data = []
+            else:
+                players_data = []
+
             player_data = self.serialize_to_dict()
-            with open(file_path, "w") as file:
-                json.dump(player_data, file, indent=4)
+            for player in players_data:
+                if (player["first_name"] == player_data["first_name"]
+                   and player["family_name"] == player_data["family_name"]):
+                    print(f"Player {self.first_name} {self.family_name} already exists in the file.")
+                    return
+            players_data.append(player_data)
+
+            with open(file_path, "w", encoding="utf-8") as file:
+                json.dump(players_data, file, indent=4)
+            print(f"All data have been saved in {file_path} successfully.")
+
         except IOError as e:
-            print(f"Failed to save JSON file named: {e}.")
+            print(f"Failed to save data: {e}.")
 
     @classmethod
     def deserialize_from_dict(cls, data):
@@ -108,12 +128,35 @@ class Tournament:
         }
 
     def save_to_json(self, file_path):
-        data_to_save = self.serialize_to_dict()
+
+        if os.path.exists(file_path):
+            with open(file_path, "r", encoding="utf-8") as file:
+                try:
+                    tournaments_data = json.load(file)
+                except json.JSONDecodeError:
+                    tournaments_data = []
+
+        else:
+            tournaments_data = []
+
+        tournaments_data.append(self.serialize_to_dict())
+
         try:
-            with open(file_path, "w") as file:
-                json.dump(data_to_save, file, indent=4)
+            with open(file_path, "w", encoding="utf-8") as file:
+                json.dump(tournaments_data, file, indent=4)
+                print(f"Tournoi sauvegardé avec succès dans {file_path}.")
         except IOError as e:
-            print(f"Failed to save JSON file named: {e}")
+            print(f"Failed to save JSON file: {e}")
+
+    @staticmethod
+    def save_all_tournaments_to_json(file_path, tournaments):
+        tournaments_data = [tournament.serialize_to_dict() for tournament in tournaments]
+        try:
+            with open(file_path, "w", encoding="utf-8") as file:
+                json.dump(tournaments_data, file, indent=4)
+            print(f"All data have been saved in {file_path} successfully.")
+        except IOError as e:
+            print(f"Failed to save data in {e}.")
 
     @classmethod
     def deserialize_from_dict(cls, data):
@@ -135,6 +178,7 @@ class Tournament:
         try:
             with open(file_path, "r") as file:
                 data = json.load(file)
+                print(f"Fichier chargé avec succès depuis {file_path}.")
                 return data
         except IOError as e:
             print(f"Failed to read JSON file named: {e}")
@@ -147,9 +191,13 @@ class Tournament:
             return []
 
         with open(file_path, "r") as file:
-            data = json.load(file)
+            try:
+                data = cls.load_from_json("archived_tournaments.json")
+                return [cls.deserialize_from_dict(tournament_data) for tournament_data in data]
 
-        return [cls.deserialize_from_dict(tournament_data) for tournament_data in data]
+            except (IOError, json.JSONDecodeError) as e:
+                print(f"Reading archived tournament failed.")
+                return []
 
 
 class Match:
