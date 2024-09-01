@@ -26,31 +26,36 @@ class TournamentController:
             elif main_menu_choice == "4":
                 TournamentView.display_informations_menu()
             elif main_menu_choice == "5":
-                print("Au revoir!")
+                self.update_national_chess_id()
+            elif main_menu_choice == "6":
+                print("Good bye!")
                 break
             else:
-                print("Choix invalide, veuillez entre le chiffre correspondant à votre requête")
+                print("Invalid choice, please enter the number corresponding to your request")
 
     def tournament_in_progress(self):
         return self.tournament is not None
 
     def create_tournament(self):
         if self.tournament_in_progress():
-            print("Un tournoi est déjà en cours. Veuillez le terminer ou l'annuler d'abord.")
+            print("A tournament is already running, please finish or quit it first.")
 
         name, location, date, description = TournamentView.get_tournament_informations()
         self.tournament = Tournament(name, location, date, description)
         TournamentView.display_tournament_infos(self.tournament)
 
     def add_player(self):
+
+        family_name, first_name, date_of_birth, national_chess_number = TournamentView.get_player_informations()
+        player = Player(family_name, first_name, date_of_birth, points=0)
+        player.national_chess_number = national_chess_number
+        player.save_players_to_json("archived.players.json")
+
         if self.tournament_in_progress():
-            family_name, first_name, date_of_birth = TournamentView.get_player_informations()
-            player = Player(family_name, first_name, date_of_birth, points=0)
-            player.save_players_to_json("archived.players.json")
             self.tournament.add_player(player)
             TournamentView.display_players(self.tournament.players_list)
         else:
-            print("Il n'y a pas de tournoi en cours")
+            print("There is no tournament running, player saved in file")
 
     def run_tournament(self):
         # On vérifie d'abord qu'un tournoi a été crée et qu'il comporte des joueurs
@@ -130,6 +135,32 @@ class TournamentController:
         for match in matches:
             score_player1, score_player2 = TournamentView.get_match_results(match)
             match.update_players_points(score_player1, score_player2)
+
+    def update_national_chess_id(self):
+        try:
+            with open("archived.players.json", "r", encoding="utf-8") as file:
+                players_data = json.load(file)
+                players_list = [Player.deserialize_from_dict(player_dict) for player_dict in players_data]
+        except (FileNotFoundError, json.JSONDecodeError):
+            print("Error loading players data.")
+            return
+
+        TournamentView.display_players(players_list)
+
+        index = TournamentView.get_player_index()
+
+        if index is not None and 0 <= index < len(players_data):
+            national_chess_number = TournamentView.get_player_national_chess_number()
+            players_data[index]["national_chess_number"] = national_chess_number
+
+            try:
+                with open("archived.players.json", "w", encoding="utf-8") as file:
+                    json.dump(players_data, file, indent=4)
+                print("Player's national chess number updated successfully.")
+            except IOError as e:
+                print(f"Failed to save data: {e}")
+        else:
+            print("Invalid player index selected.")
 
 
 class InformationController:
