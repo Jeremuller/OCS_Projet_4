@@ -13,33 +13,36 @@ class TournamentView:
         print("1. Create new tournament")
         print("2. Add player")
         print("3. Start tournament")
-        print("4. Display informations")
-        print("5. Update plater national chess number")
-        print("6. Quitter")
+        print("4. Load tournament")
+        print("5. Display informations")
+        print("6. Update plater national chess number")
+        print("7. Quitter")
         main_menu_choice = input("Please enter the number of your choice: ")
         return main_menu_choice
 
     @staticmethod
     def display_informations_menu():
         print("\nDisplay informations:")
-        print("1. Display tournament's informations")
-        print("2. Display tournament's players")
-        print("3. Display tournament's rounds and matches")
-        print("4. Display on file players")
-        print("5. Display on file tournaments")
-        print("6. Back to main menu")
-        informations_menu_choice = input("Please enter the number of your choice: ")
-        return informations_menu_choice
+        print("1. Display archived players")
+        print("2. Display archived tournaments")
+        print("3. Display tournament's players")
+        print("4. Display tournament's turns")
+        print("5. Back to main menu")
+
+        information_menu_choice = input("Please enter the number of your choice: ")
+        print(information_menu_choice)
+        return str(information_menu_choice)
 
     @staticmethod
-    def load_turns_data():
-        turns_data = Turn.serialize_to_dict("turns_list.json")
-        return turns_data
+    def display_tournament_info(tournament):
+        print(f"{tournament.name} the {tournament.date} in {tournament.location} : {tournament.description}")
 
     @staticmethod
-    def display_tournament_infos(tournament):
-        print(f"\nTournament's details: {tournament.name}:")
-        print(f"Date: {tournament.date}")
+    def display_tournament(tournament_list):
+        for index, tournament in enumerate(tournament_list, start=0):
+            print(f"{index}. {tournament.name} {tournament.date} "
+                  f"{tournament.actual_turn_number}/{tournament.number_of_turns}")
+            return index
 
     @staticmethod
     def display_players(players_list):
@@ -49,12 +52,26 @@ class TournamentView:
                   f"born {player.date_of_birth} ID {player.national_chess_number}")
 
     @staticmethod
+    def display_turns(turns_list):
+        print("\nTurns list: ")
+        for turn in turns_list:
+            print(f"{turn.name}")
+            for match in turn.matches:
+                print(f"{match.match_id} : {match.player1} vs {match.player2} : result : {match.result}")
+
+    @staticmethod
     def display_tournament_turns(tournament):
         print(f"\n Tournament's turns {tournament.name}:")
+
+        if not tournament.turns_list:
+            print("No turns available for this tournament.")
+
         for turn in tournament.turns_list:
-            print(turn.name)
-            for turn.match in turn.matches:
-                print(str(turn.match))
+            print(f"\nTurn: {turn.name}")
+            if not turn.matches:
+                print("No matches for this turn.")
+
+            print(str(turn))
 
     @staticmethod
     def display_match_results(matches):
@@ -93,6 +110,15 @@ class TournamentView:
         date = input("Date (format MMDDYYYY) : ")
         description = input("Description: ")
         return name, location, date, description
+
+    @staticmethod
+    def get_tournament_index():
+        try:
+            index = int(input("Please enter the number of the tournament you want to select: "))
+            return index
+        except ValueError:
+            print("Invalid input, Please enter a valid number")
+            return None
 
     @staticmethod
     def get_match_results(match):

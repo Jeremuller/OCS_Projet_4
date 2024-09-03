@@ -247,9 +247,9 @@ class Match:
                 data = json.load(file)
             return cls.deserialize_from_dict(data)
         except IOError as e:
-            print(f"Erreur lors de la lecture du fichier JSON: {e}")
+            print(f"Failed to read JSON file: {e}")
         except json.JSONDecodeError as e:
-            print(f"Erreur de décodage du fichier JSON: {e}")
+            print(f"Failed to decode JSON file: {e}")
 
     def __str__(self):
         return f"{self.match_id}: {self.player1} vs {self.player2}, Result: {self.result}"
@@ -349,8 +349,10 @@ class Turn:
             with open(file_path, "r") as file:
                 data = json.load(file)
             return data
+        except IOError as e:
+            print(f"Failed to read JSON file: {e}")
         except json.JSONDecodeError as e:
-            print(f"Failed to decode JSON file name: {e}")
+            print(f"Failed to decode JSON file: {e}")
 
     def __str__(self):
         return f"Turn: {self.name}, Matches: {[str(match) for match in self.matches]}"

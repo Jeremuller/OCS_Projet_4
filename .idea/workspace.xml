@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Versions corrigée de la gestion des données pour player et tournois, restent à implémenter les menus, notament l'ajout de l'ID et les rapport tournois indexés et détails de tournois">
+    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Gestions des ID, correcte, mise à jour des menus.&#10;&#10;Restent: les derniers rapports, la documentation, le nettoyage et flake8.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -250,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725084512474</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Gestions des ID, correcte, mise à jour des menus.&#10;&#10;Restent: les derniers rapports, la documentation, le nettoyage et flake8.">
+      <option name="closed" value="true" />
+      <created>1725203001621</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1725203001621</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -285,10 +294,19 @@
     <MESSAGE value="Révisions du code pour remplir les fonctions d'archivage, à terminer." />
     <MESSAGE value="Fin des implémentations de (dé)sérialisation, tests validés." />
     <MESSAGE value="Versions corrigée de la gestion des données pour player et tournois, restent à implémenter les menus, notament l'ajout de l'ID et les rapport tournois indexés et détails de tournois" />
-    <option name="LAST_COMMIT_MESSAGE" value="Versions corrigée de la gestion des données pour player et tournois, restent à implémenter les menus, notament l'ajout de l'ID et les rapport tournois indexés et détails de tournois" />
+    <MESSAGE value="Gestions des ID, correcte, mise à jour des menus.&#10;&#10;Restent: les derniers rapports, la documentation, le nettoyage et flake8." />
+    <option name="LAST_COMMIT_MESSAGE" value="Gestions des ID, correcte, mise à jour des menus.&#10;&#10;Restent: les derniers rapports, la documentation, le nettoyage et flake8." />
   </component>
   <component name="WfRunsListSearchHistory"><![CDATA[{
   "history": [
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
     {
       "branch": "master",
       "currentBranchFilter": true
