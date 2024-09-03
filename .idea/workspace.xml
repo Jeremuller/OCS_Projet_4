@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Docstrings, comments requirements and flake8 rapport.&#10;&#10;README still missing yet">
+    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="README added. Final commit.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,6 +21,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -285,7 +288,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725402567007</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="README added. Final commit.">
+      <option name="closed" value="true" />
+      <created>1725403222427</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1725403222427</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -324,7 +335,8 @@
     <MESSAGE value="implémentation terminée! Nous passons au nettoyage." />
     <MESSAGE value="Post cleaning update, still functioning.&#10;&#10;Documenting now." />
     <MESSAGE value="Docstrings, comments requirements and flake8 rapport.&#10;&#10;README still missing yet" />
-    <option name="LAST_COMMIT_MESSAGE" value="Docstrings, comments requirements and flake8 rapport.&#10;&#10;README still missing yet" />
+    <MESSAGE value="README added. Final commit." />
+    <option name="LAST_COMMIT_MESSAGE" value="README added. Final commit." />
   </component>
   <component name="WfRunsListSearchHistory"><![CDATA[{
   "history": [

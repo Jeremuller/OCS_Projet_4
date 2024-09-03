@@ -77,10 +77,10 @@ To maintain code quality and adhere to PEP 8 standards, you can generate a Flake
 3. Run the following command to generate a Flake8 report, with a maximum line length of 119 characters, and save the output to a file:
 
     ```bash
-    flake8 --max-line-length=119 controller.py --output-file=flake8_report_file_name.txt
+    flake8 --max-line-length=119 controller.py --output-file=flake8_report_controller.html
     ```
 
-4. The report will be saved in `flake8_report_controller.txt`, detailing any style violations found in `controller.py`.
+4. The report will be saved in `flake8_report_controller.html`, detailing any style violations found in `controller.py`.
 
 You can repeat this process for other files in the project by replacing `controller.py` with the desired file name.
 
