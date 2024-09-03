@@ -5,7 +5,7 @@ import os
 
 class Player:
 
-    """Déclaration de la classe joueur"""
+    """Declaring player class"""
 
     def __init__(self, family_name, first_name, date_of_birth, points=0):
         self.family_name = family_name
@@ -62,35 +62,13 @@ class Player:
         player.national_chess_number = data.get("national_chess_number")
         return player
 
-    @classmethod
-    def load_from_json(cls, file_path):
-        try:
-            with open(file_path, "r") as file:
-                return json.load(file)
-        except IOError as e:
-            print(f"Failed to read JSON file named: {e}")
-        except json.JSONDecodeError as e:
-            print(f"Failed to decode JSON file named: {e}")
-
     def add_national_chess_number(self, national_chess_number):
         self.national_chess_number = national_chess_number
-
-    def __repr__(self):
-        return (f"{self.family_name} {self.first_name}, born: {self.date_of_birth} "
-                f"ID: {self.national_chess_number}, Points: {self.points}")
-
-
-class FinishedTournamentException(Exception):
-    pass
-
-
-class IncorrectMatchResultException(Exception):
-    pass
 
 
 class Tournament:
 
-    """Déclaration de la classe tournoi"""
+    """Declaring tournament class"""
 
     def __init__(self, name, location, date, description, actual_turn_number=0,  number_of_turns=4):
 
@@ -110,10 +88,6 @@ class Tournament:
         turn = Turn(name, self.players_list)
         self.turns_list.append(turn)
         return turn
-
-    def __str__(self):
-        return (f"Tournament: {self.name}, Location: {self.location}, Date: {self.date}, "
-                f"Description: {self.description}, Current Turn: {self.actual_turn_number}/{self.number_of_turns}")
 
     def serialize_to_dict(self):
         return {
@@ -144,19 +118,9 @@ class Tournament:
         try:
             with open(file_path, "w", encoding="utf-8") as file:
                 json.dump(tournaments_data, file, indent=4)
-                print(f"Tournoi sauvegardé avec succès dans {file_path}.")
+                print(f"Tournament successfully saved in {file_path}.")
         except IOError as e:
             print(f"Failed to save JSON file: {e}")
-
-    @staticmethod
-    def save_all_tournaments_to_json(file_path, tournaments):
-        tournaments_data = [tournament.serialize_to_dict() for tournament in tournaments]
-        try:
-            with open(file_path, "w", encoding="utf-8") as file:
-                json.dump(tournaments_data, file, indent=4)
-            print(f"All data have been saved in {file_path} successfully.")
-        except IOError as e:
-            print(f"Failed to save data in {e}.")
 
     @classmethod
     def deserialize_from_dict(cls, data):
@@ -178,31 +142,17 @@ class Tournament:
         try:
             with open(file_path, "r") as file:
                 data = json.load(file)
-                print(f"Fichier chargé avec succès depuis {file_path}.")
+                print(f"File load successfully from {file_path}.")
                 return data
         except IOError as e:
             print(f"Failed to read JSON file named: {e}")
         except json.JSONDecodeError as e:
             print(f"Failed do decode JSON file named: {e}")
 
-    @classmethod
-    def load_archived_tournaments(cls, file_path="archived_tournaments.json"):
-        if not os.path.exists(file_path):
-            return []
-
-        with open(file_path, "r") as file:
-            try:
-                data = cls.load_from_json("archived_tournaments.json")
-                return [cls.deserialize_from_dict(tournament_data) for tournament_data in data]
-
-            except (IOError, json.JSONDecodeError) as e:
-                print(f"Reading archived tournament failed.")
-                return []
-
 
 class Match:
 
-    """Déclaration de la classe match"""
+    """Declaring match class"""
 
     def __init__(self, match_id, player1, player2):
         self.player1 = player1
@@ -240,24 +190,10 @@ class Match:
         match.result = data["result"]
         return match
 
-    @classmethod
-    def load_from_json(cls, file_path):
-        try:
-            with open(file_path, "r") as file:
-                data = json.load(file)
-            return cls.deserialize_from_dict(data)
-        except IOError as e:
-            print(f"Failed to read JSON file: {e}")
-        except json.JSONDecodeError as e:
-            print(f"Failed to decode JSON file: {e}")
-
-    def __str__(self):
-        return f"{self.match_id}: {self.player1} vs {self.player2}, Result: {self.result}"
-
 
 class Turn:
 
-    """Déclaration de la classe tour"""
+    """Declaring turn class"""
 
     def __init__(self, name, players_list, previous_matches=None):
         self.name = name
@@ -265,17 +201,15 @@ class Turn:
         self.matches = []
         self.previous_matches = previous_matches if previous_matches else []
 
-    # Déclaration d'une fonction qui va définir les matchs pour un nouveau tour
+    # A function that will handle the matchmaking
     def generate_matches(self):
 
-        # Crée une copie de la liste de joueurs
         playing_players = self.players_list.copy()
 
         if self.name == "round_1":
-            # Mélange les joueurs aléatoirement pour le premier tour
             random.shuffle(playing_players)
         else:
-            #  Tri de la liste de joueurs en fonction de leur nombre de points
+            #  Sort players by their points
             playing_players.sort(key=lambda player: player.points, reverse=True)
             i = 0
             while i < len(playing_players) - 1:
@@ -292,20 +226,20 @@ class Turn:
             player1 = playing_players[i]
             player2 = None
 
-            # Cherche un adversaire qui n'a pas déjà joué contre player1
+            # Look for a player which haven't played against player1 yet
             for j in range(i + 1, len(playing_players)):
                 potential_opponent = playing_players[j]
                 if not self.has_played_before(player1, potential_opponent):
                     player2 = potential_opponent
                     break
 
-            # Si on a trouvé un adversaire valide
+            # If we've found an opponent
             if player2:
                 match_id = f"{self.name}_match_{i + 1}"
                 matches.append(Match(match_id, player1, player2))
                 playing_players.remove(player2)
             else:
-                # Pas d'adversaire disponible (cas improbable mais à gérer)
+                # If there is no opponent
                 match_id = f"{self.name}_match_{i + 1}"
                 matches.append(Match(match_id, player1, playing_players[i + 1]))
             i += 1
@@ -343,16 +277,3 @@ class Turn:
         turn.matches = [Match.deserialize_from_dict(match_data) for match_data in data["matches"]]
         return turn
 
-    @classmethod
-    def load_from_json(cls, file_path):
-        try:
-            with open(file_path, "r") as file:
-                data = json.load(file)
-            return data
-        except IOError as e:
-            print(f"Failed to read JSON file: {e}")
-        except json.JSONDecodeError as e:
-            print(f"Failed to decode JSON file: {e}")
-
-    def __str__(self):
-        return f"Turn: {self.name}, Matches: {[str(match) for match in self.matches]}"

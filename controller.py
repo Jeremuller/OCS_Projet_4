@@ -26,7 +26,7 @@ class TournamentController:
             elif main_menu_choice == "4":
                 self.load_tournament()
             elif main_menu_choice == "5":
-                self.informations_menu()
+                self.datas_menu()
             elif main_menu_choice == "6":
                 self.update_national_chess_id()
             elif main_menu_choice == "7":
@@ -43,13 +43,13 @@ class TournamentController:
         if self.tournament_in_progress():
             print("A tournament is already running, please finish or quit it first.")
 
-        name, location, date, description = TournamentView.get_tournament_informations()
+        name, location, date, description = TournamentView.get_tournament_datas()
         self.tournament = Tournament(name, location, date, description)
         TournamentView.display_tournament_info(self.tournament)
 
     def add_player(self):
 
-        family_name, first_name, date_of_birth, national_chess_number = TournamentView.get_player_informations()
+        family_name, first_name, date_of_birth, national_chess_number = TournamentView.get_player_datas()
         player = Player(family_name, first_name, date_of_birth, points=0)
         player.national_chess_number = national_chess_number
         player.save_players_to_json("archived_players.json")
@@ -58,27 +58,27 @@ class TournamentController:
             self.tournament.add_player(player)
             TournamentView.display_players(self.tournament.players_list)
         else:
-            print("There is no tournament running, player saved in file")
+            print("There is no tournament running, player saved in file.")
 
     def run_tournament(self):
-        # On vérifie d'abord qu'un tournoi a été crée et qu'il comporte des joueurs
+        # First we check if a tournament isn't already running, and then if it has players in it
         if self.tournament_in_progress():
             if not self.tournament.players_list:
-                print("Le tournoi n'a aucun joueur!")
+                print("This tournament has no players.")
                 return
 
-            # Contrôle que le tournoi n'est pas encore terminé
+            # Check tournament's turns to see if we can continue running
             while self.tournament.actual_turn_number < self.tournament.number_of_turns:
                 print(f"Début du tour {self.tournament.actual_turn_number + 1}/{self.tournament.number_of_turns}")
 
-                # Générer les matchs
+                # Generate matches
                 turn = self.tournament.create_turn(f"round_{self.tournament.actual_turn_number + 1}")
                 matches = turn.generate_matches()
 
-                # Saisie des résultats des matchs
+                # Set match results
                 self.process_match_results(matches)
 
-                # Demander à l'utilisateur s'il souhaite continuer
+                # Ask for continue
                 while True:
                     continue_choice = input("Do you like to get to the next turn ? (yes/no): ").lower()
                     if continue_choice == "no":
@@ -86,10 +86,10 @@ class TournamentController:
 
                         if confirm_exit == "yes":
 
-                            print("Tournoi interrompu")
+                            print("Tournament interrupted")
                             return
                         else:
-                            print("Retour au tournoi.")
+                            print("Back to tournament.")
                             break
                     elif continue_choice == "yes":
                         self.tournament.actual_turn_number += 1
@@ -97,12 +97,13 @@ class TournamentController:
                     else:
                         print("Invalid choice, please enter yes or no.")
 
-            # Message de fin de tournoi avec affichage des participants et leurs scores
+            # Tournament ending message with a resume of the player's scores
             print("\nTournament is over, here is the list of the final scores: ")
             self.tournament.save_to_json("archived_tournaments.json")
             sorted_players = sorted(self.tournament.players_list, key=lambda player: player.points, reverse=True)
-            for player in sorted_players:
-                print(f"Player : {player.first_name} {player.family_name} - Points : {player.points}")
+            for sorted_player in sorted_players:
+                print(f"Player : {sorted_player.first_name} {sorted_player.family_name}"
+                      f" - Points : {sorted_player.points}")
 
     def load_tournament(self):
         try:
@@ -132,39 +133,28 @@ class TournamentController:
         except IOError as e:
             print(f"Error in reading file {e}")
 
-
-    def informations_menu(self):
+    @staticmethod
+    def datas_menu():
         while True:
-            try:
-                information_menu_choice = TournamentView.display_informations_menu()
-                print(f"DEBUG: Choix utilisateur: {information_menu_choice}")
+            information_menu_choice = TournamentView.display_datas_menu()
 
-                if information_menu_choice == "1":
-                    print("DEBUG: Afficher les joueurs archivés")  # Debug
-                    InformationController.display_archived_players()
+            if information_menu_choice == "1":
+                InformationController.display_archived_players()
 
-                elif information_menu_choice == "2":
-                    print("DEBUG: Afficher les tournois archivés")  # Debug
-                    InformationController.display_archived_tournaments()
+            elif information_menu_choice == "2":
+                InformationController.display_archived_tournaments()
 
-                elif information_menu_choice == "3":
-                    print("DEBUG: Afficher les joueurs d'un tournoi")  # Debug
-                    InformationController.display_tournament_players()
+            elif information_menu_choice == "3":
+                InformationController.display_tournament_players()
 
-                elif information_menu_choice == "4":
-                    print("DEBUG: Afficher les tours et matchs d'un tournoi")  # Debug
-                    InformationController.display_tournament_turns()
+            elif information_menu_choice == "4":
+                InformationController.display_tournament_turns()
 
-                elif information_menu_choice == "5":
-                    print("DEBUG: Quitter le menu des informations")  # Debug
-                    break
-
-                else:
-                    print("Invalid choice, please select a number proposed above.")
-
-            except Exception as e:
-                print(f"Erreur inattendue : {e}")
+            elif information_menu_choice == "5":
                 break
+
+            else:
+                print("Invalid choice, please select a number proposed above.")
 
     @staticmethod
     def process_match_results(matches):
@@ -290,69 +280,7 @@ class InformationController:
             print(f"Error in reading file {e}")
 
 
-
-
-
-
-"""def integration_test():
-
-    players_list = [
-        Player(first_name="Magnus", family_name="Carlsen", date_of_birth="30111990"),
-        Player(first_name="Hikaru", family_name="Nakamura", date_of_birth="09121987"),
-        Player(first_name="Fabiano", family_name="Caruana", date_of_birth="30111992"),
-        Player(first_name="Ian", family_name="Nepomniachtchi", date_of_birth="14071990")
-    ]
-
-    players_list[0].national_chess_number = "NOR19901130"
-    players_list[1].national_chess_number = "USA19871209"
-    players_list[2].national_chess_number = "USA19921130"
-    players_list[3].national_chess_number = "RUS19900714"
-
-    print("Initial list of players:")
-    print(str(players_list))
-
-    tournament = Tournament(
-        name="Grand chess Tournament",
-        location="Paris",
-        date="25082024",
-        description="2024's edition Grand Chess Tournament"
-    )
-
-    for player in players_list:
-        tournament.add_player(player)
-
-    first_turn = tournament.create_turn("Round_1")
-    first_turn.generate_matches()
-
-    print("\nInitial tournament data:")
-    print(tournament)
-
-    test_file = "tournament_test.json"
-    tournament.save_to_json(test_file)
-
-    loaded_data = Tournament.load_from_json(test_file)
-
-    if isinstance(loaded_data, list):
-        print("loaded_data est une liste.")
-    else:
-        print("loaded_data n'est pas une liste.")
-
-    deserialized_tournaments = [Tournament.deserialize_from_dict(tournament_data) for tournament_data in loaded_data]
-
-    print("\nDeserialized tournament data:")
-    for deserialized_tournament in deserialized_tournaments:
-        print(f"{deserialized_tournament.name} {deserialized_tournament.date} "
-              f"{deserialized_tournament.location} {deserialized_tournament.players_list}")
-
-    os.remove("tournament_test.json")
-
-    print("test réussi")
-
-
-integration_test()"""
-
-
-# Point d'entrée du programme
+# Program entry point
 if __name__ == "__main__":
     controller = TournamentController()
     controller.start()

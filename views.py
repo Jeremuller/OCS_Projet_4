@@ -1,6 +1,3 @@
-from models import Turn
-
-
 class TournamentView:
 
     @staticmethod
@@ -14,15 +11,15 @@ class TournamentView:
         print("2. Add player")
         print("3. Start tournament")
         print("4. Load tournament")
-        print("5. Display informations")
+        print("5. Display datas")
         print("6. Update plater national chess number")
         print("7. Quitter")
         main_menu_choice = input("Please enter the number of your choice: ")
         return main_menu_choice
 
     @staticmethod
-    def display_informations_menu():
-        print("\nDisplay informations:")
+    def display_datas_menu():
+        print("\nDisplay datas:")
         print("1. Display archived players")
         print("2. Display archived tournaments")
         print("3. Display tournament's players")
@@ -60,31 +57,11 @@ class TournamentView:
                 print(f"{match.match_id} : {match.player1} vs {match.player2} : result : {match.result}")
 
     @staticmethod
-    def display_tournament_turns(tournament):
-        print(f"\n Tournament's turns {tournament.name}:")
-
-        if not tournament.turns_list:
-            print("No turns available for this tournament.")
-
-        for turn in tournament.turns_list:
-            print(f"\nTurn: {turn.name}")
-            if not turn.matches:
-                print("No matches for this turn.")
-
-            print(str(turn))
-
-    @staticmethod
-    def display_match_results(matches):
-        print("\nMatches results: ")
-        for match in matches:
-            print(f"{match.player1} vs {match.player2} ->> winner: {match.result}")
-
-    @staticmethod
-    def get_player_informations():
-        print("Please enter the informations of the player you want to register")
+    def get_player_datas():
+        print("Please enter the datas of the player you want to register")
         family_name = input("Family name: ")
         first_name = input("First name: ")
-        date_of_birth = input("Date of birth (format JJMMAAAA): ")
+        date_of_birth = input("Date of birth (example 04072024): ")
         national_chess_number = input("National chess number: ")
         return family_name, first_name, date_of_birth, national_chess_number
 
@@ -103,11 +80,11 @@ class TournamentView:
         return national_chess_number
 
     @staticmethod
-    def get_tournament_informations():
-        print("Please enter the informations of the tournament you want to create")
+    def get_tournament_datas():
+        print("Please enter the datas of the tournament you want to create")
         name = input("Name: ")
         location = input("Location: ")
-        date = input("Date (format MMDDYYYY) : ")
+        date = input("Date () : ")
         description = input("Description: ")
         return name, location, date, description
 
