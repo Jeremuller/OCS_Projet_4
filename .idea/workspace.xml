@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Post cleaning update, still functioning.&#10;&#10;Documenting now.">
+    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Docstrings, comments requirements and flake8 rapport.&#10;&#10;README still missing yet">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -280,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725378200321</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Docstrings, comments requirements and flake8 rapport.&#10;&#10;README still missing yet">
+      <option name="closed" value="true" />
+      <created>1725402567007</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1725402567007</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -318,7 +323,8 @@
     <MESSAGE value="Gestions des ID, correcte, mise à jour des menus.&#10;&#10;Restent: les derniers rapports, la documentation, le nettoyage et flake8." />
     <MESSAGE value="implémentation terminée! Nous passons au nettoyage." />
     <MESSAGE value="Post cleaning update, still functioning.&#10;&#10;Documenting now." />
-    <option name="LAST_COMMIT_MESSAGE" value="Post cleaning update, still functioning.&#10;&#10;Documenting now." />
+    <MESSAGE value="Docstrings, comments requirements and flake8 rapport.&#10;&#10;README still missing yet" />
+    <option name="LAST_COMMIT_MESSAGE" value="Docstrings, comments requirements and flake8 rapport.&#10;&#10;README still missing yet" />
   </component>
   <component name="WfRunsListSearchHistory"><![CDATA[{
   "history": [
