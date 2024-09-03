@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="">
+    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Post cleaning update, still functioning.&#10;&#10;Documenting now.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
@@ -37,20 +37,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.controler.executor&quot;: &quot;Run&quot;,
-    &quot;Python.controller.executor&quot;: &quot;Run&quot;,
-    &quot;Python.models.executor&quot;: &quot;Run&quot;,
-    &quot;Python.quizz.executor&quot;: &quot;Run&quot;,
-    &quot;Python.views.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Jérémy/OCS/Exos/Exercice&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.controler.executor": "Run",
+    "Python.controller.executor": "Run",
+    "Python.models.executor": "Run",
+    "Python.quizz.executor": "Run",
+    "Python.views.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/Jérémy/OCS/OCS_Projet_4/.env/Scripts/flake8.exe",
+    "settings.editor.selected.configurable": "preferences.externalTools"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Jérémy\OCS\OCS_Projet_4\Flake8_rapport" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -267,7 +272,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725375079717</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Post cleaning update, still functioning.&#10;&#10;Documenting now.">
+      <option name="closed" value="true" />
+      <created>1725378200321</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1725378200321</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -304,7 +317,8 @@
     <MESSAGE value="Versions corrigée de la gestion des données pour player et tournois, restent à implémenter les menus, notament l'ajout de l'ID et les rapport tournois indexés et détails de tournois" />
     <MESSAGE value="Gestions des ID, correcte, mise à jour des menus.&#10;&#10;Restent: les derniers rapports, la documentation, le nettoyage et flake8." />
     <MESSAGE value="implémentation terminée! Nous passons au nettoyage." />
-    <option name="LAST_COMMIT_MESSAGE" value="implémentation terminée! Nous passons au nettoyage." />
+    <MESSAGE value="Post cleaning update, still functioning.&#10;&#10;Documenting now." />
+    <option name="LAST_COMMIT_MESSAGE" value="Post cleaning update, still functioning.&#10;&#10;Documenting now." />
   </component>
   <component name="WfRunsListSearchHistory"><![CDATA[{
   "history": [

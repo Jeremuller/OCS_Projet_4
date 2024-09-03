@@ -6,11 +6,26 @@ import os
 
 class TournamentController:
 
+    """
+
+        This class handles the main operations of the chess tournament manager,
+        including creating tournaments, adding players, running tournaments,
+        loading archived data, and updating player information.
+
+    """
+
     def __init__(self):
         self.view = TournamentView()
         self.tournament = None
 
     def start(self):
+
+        """
+
+            Starts the tournament management program, displaying the welcome message
+            and main menu, and directing the user based on their menu choices.
+
+        """
 
         TournamentView.display_welcome_message()
 
@@ -37,9 +52,27 @@ class TournamentController:
                 print("Invalid choice, please enter the number corresponding to your request")
 
     def tournament_in_progress(self):
+
+        """
+
+            Checks if a tournament is currently in progress.
+
+            Returns:
+                bool: True if a tournament is in progress, False otherwise.
+
+        """
+
         return self.tournament is not None
 
     def create_tournament(self):
+
+        """
+
+           Creates a new tournament if none is currently in progress.
+           Prompts the user for tournament details and initializes a new Tournament object.
+
+        """
+
         if self.tournament_in_progress():
             print("A tournament is already running, please finish or quit it first.")
 
@@ -48,6 +81,13 @@ class TournamentController:
         TournamentView.display_tournament_info(self.tournament)
 
     def add_player(self):
+
+        """
+
+            Adds a new player to the current tournament or archives the player
+            if no tournament is in progress.
+
+        """
 
         family_name, first_name, date_of_birth, national_chess_number = TournamentView.get_player_datas()
         player = Player(family_name, first_name, date_of_birth, points=0)
@@ -61,6 +101,14 @@ class TournamentController:
             print("There is no tournament running, player saved in file.")
 
     def run_tournament(self):
+
+        """
+
+            Runs the current tournament, handling turn progression, match results,
+            and checking if the tournament has been completed.
+
+        """
+
         # First we check if a tournament isn't already running, and then if it has players in it
         if self.tournament_in_progress():
             if not self.tournament.players_list:
@@ -71,14 +119,14 @@ class TournamentController:
             while self.tournament.actual_turn_number < self.tournament.number_of_turns:
                 print(f"Début du tour {self.tournament.actual_turn_number + 1}/{self.tournament.number_of_turns}")
 
-                # Generate matches
+                # Generate matches for the current turn
                 turn = self.tournament.create_turn(f"round_{self.tournament.actual_turn_number + 1}")
                 matches = turn.generate_matches()
 
                 # Set match results
                 self.process_match_results(matches)
 
-                # Ask for continue
+                # Ask if the user wants to continue to the next turn
                 while True:
                     continue_choice = input("Do you like to get to the next turn ? (yes/no): ").lower()
                     if continue_choice == "no":
@@ -106,6 +154,13 @@ class TournamentController:
                       f" - Points : {sorted_player.points}")
 
     def load_tournament(self):
+
+        """
+
+            Loads a tournament from the archive if it has not been completed.
+
+        """
+
         try:
             with open("archived_tournaments.json", "r", encoding="utf-8") as file:
                 tournament_list = json.load(file)
@@ -135,6 +190,13 @@ class TournamentController:
 
     @staticmethod
     def datas_menu():
+
+        """
+
+            Displays the data menu to the user and handles data display choices.
+
+        """
+
         while True:
             information_menu_choice = TournamentView.display_datas_menu()
 
@@ -158,12 +220,29 @@ class TournamentController:
 
     @staticmethod
     def process_match_results(matches):
+
+        """
+
+            Processes the results of matches, updating player points accordingly.
+
+            Args:
+                matches (list): A list of Match objects to process.
+
+        """
+
         for match in matches:
             score_player1, score_player2 = TournamentView.get_match_results(match)
             match.update_players_points(score_player1, score_player2)
 
     @staticmethod
     def update_national_chess_id():
+
+        """
+
+           Allows the user to update a player's national chess number.
+
+        """
+
         try:
             with open("archived_players.json", "r", encoding="utf-8") as file:
                 players_data = json.load(file)
@@ -192,8 +271,22 @@ class TournamentController:
 
 class InformationController:
 
+    """
+
+        This class handles the display of archived players and tournaments, as well as
+        the display of players and turns for a specific tournament.
+
+    """
+
     @staticmethod
     def display_archived_players():
+
+        """
+
+            Displays a list of all archived players sorted by family name.
+
+        """
+
         file_path = "archived_players.json"
 
         if not os.path.exists("archived_players.json"):
@@ -211,6 +304,13 @@ class InformationController:
 
     @staticmethod
     def display_archived_tournaments():
+
+        """
+
+            Displays a list of all archived tournaments.
+
+        """
+
         file_path = "archived_tournaments.json"
 
         if not os.path.exists("archived_tournaments.json"):
@@ -230,6 +330,13 @@ class InformationController:
 
     @staticmethod
     def display_tournament_players():
+
+        """
+
+            Displays the players of a selected archived tournament.
+
+        """
+
         InformationController.display_archived_tournaments()
         try:
             with open("archived_tournaments.json", "r", encoding="utf-8") as file:
@@ -254,6 +361,13 @@ class InformationController:
 
     @staticmethod
     def display_tournament_turns():
+
+        """
+
+           Displays the turns of a selected archived tournament.
+
+        """
+
         InformationController.display_archived_tournaments()
         try:
             with open("archived_tournaments.json", "r", encoding="utf-8") as file:
