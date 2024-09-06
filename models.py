@@ -51,10 +51,10 @@ class Player:
             "national_chess_number": self.national_chess_number
         }
 
-    def save_players_to_json(self, file_path):
+    def save_player_to_json(self, file_path):
 
         """
-               Saves the player's data to a JSON file.
+               Saves the player's data to a JSON file. Check if teh player already exists to update datas.
 
                Args:
                    file_path (str): The path to the JSON file where the player's data will be saved.
@@ -74,13 +74,19 @@ class Player:
                 players_data = []
 
             player_data = self.serialize_to_dict()
-            for player in players_data:
+
+            player_found = False
+
+            for index, player in enumerate(players_data):
                 # Check if the player isn't already saved in the file
                 if (player["first_name"] == player_data["first_name"]
                    and player["family_name"] == player_data["family_name"]):
-                    print(f"Player {self.first_name} {self.family_name} already exists in the file.")
-                    return
-            players_data.append(player_data)
+                    players_data[index] = player_data
+                    player_found = True
+                    break
+
+            if not player_found:
+                players_data.append(player_data)
             # Save a new version of the file with the new player in it
             with open(file_path, "w", encoding="utf-8") as file:
                 json.dump(players_data, file, indent=4)
@@ -223,12 +229,13 @@ class Tournament:
 
         """
 
-           Saves the tournament's data to a JSON file.
+            Saves the tournament's data to a JSON file. If a tournament with the same
+            name, location, and date already exists, it will be updated with the new data.
 
-           Args:
-               file_path (str): The path to the JSON file where the tournament's data will be saved.
+            Args:
+            file_path (str): The path to the JSON file where the tournament's data will be saved.
 
-       """
+        """
 
         if os.path.exists(file_path):
             # Load existing tournaments data if the file exists
@@ -241,7 +248,22 @@ class Tournament:
         else:
             tournaments_data = []
 
-        tournaments_data.append(self.serialize_to_dict())
+        tournament_data = self.serialize_to_dict()
+
+        tournament_found = False
+
+        # Check if a tournament with the same name, location and date already exists
+        for index, tournament in enumerate(tournaments_data):
+            if (tournament["name"] == tournament_data["name"]
+                    and tournament["location"] == tournament_data["location"]
+                    and tournament["date"] == tournament_data["date"]):
+                # Update the existing tournament_data
+                tournaments_data[index] = tournament_data
+                tournament_found = True
+                break
+
+        if not tournament_found:
+            tournaments_data.append(tournament_data)
 
         try:
             # Save the new tournament data file with the new tournament added

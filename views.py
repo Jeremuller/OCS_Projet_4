@@ -12,6 +12,69 @@ class TournamentView:
         print("Welcome to the chess tournament manager!")
 
     @staticmethod
+    def display_ending_message():
+        print("Good bye!")
+
+    @staticmethod
+    def display_tournament_conflict_message():
+        print("A tournament is already running, please finish or quit it first.")
+
+    @staticmethod
+    def display_error_selection_message():
+        print("Invalid choice, please enter the number corresponding to your request")
+
+    @staticmethod
+    def display_player_saved_out_of_tournament():
+        print("There is no tournament running, player saved in file.")
+
+    @staticmethod
+    def display_no_player_tournament():
+        print("This tournament has no players.")
+
+    @staticmethod
+    def display_starting_turn(actual_turn_number, number_of_turn):
+        print(f"Starting turn {actual_turn_number} / {number_of_turn} :")
+
+    @staticmethod
+    def display_tournament_interrupted():
+        print("Tournament interrupted")
+
+    @staticmethod
+    def display_back_to_tournament():
+        print("Back to tournament.")
+
+    @staticmethod
+    def display_invalid_yes_no_choice():
+        print("Invalid choice, please enter yes or no.")
+
+    @staticmethod
+    def display_tournament_resume(player_list):
+        print("\nTournament is over, here is the list of the final scores: ")
+        for sorted_player in player_list:
+            print(f"Player : {sorted_player.first_name} {sorted_player.family_name}"
+                  f" - Points : {sorted_player.points}")
+
+    @staticmethod
+    def display_tournament_load_successfully():
+        print("Tournament loaded successfully, you can now choose to start it again.")
+
+    @staticmethod
+    def display_file_not_found():
+        print("File not Found.")
+
+    @staticmethod
+    def display_json_decode_error():
+        print("Failed to decode JSON file.")
+
+    @staticmethod
+    def display_reading_error():
+        print(f"Error in reading file.")
+
+    @staticmethod
+    def display_id_update_successfully():
+        print("Player's national chess number updated successfully.")
+
+    @staticmethod
     def display_menu():
 
         """
@@ -72,7 +135,7 @@ class TournamentView:
         print(f"{tournament.name} the {tournament.date} in {tournament.location} : {tournament.description}")
 
     @staticmethod
-    def display_tournament(tournament_list):
+    def display_tournaments(tournament_list):
 
         """
 
@@ -85,11 +148,17 @@ class TournamentView:
                 int: The index of the tournament displayed.
 
         """
+        index = 0
+
+        # Vérifie d'abord si la liste n'est pas vide
+        if not tournament_list:
+            print("No tournaments to display.")
+            return index
 
         for index, tournament in enumerate(tournament_list, start=0):
             print(f"{index}. {tournament.name} {tournament.date} "
                   f"{tournament.actual_turn_number}/{tournament.number_of_turns}")
-            return index
+        return index
 
     @staticmethod
     def display_players(players_list):
@@ -126,6 +195,16 @@ class TournamentView:
             for match in turn.matches:
                 print(f"{match.match_id} : {match.player1.family_name} {match.player1.first_name} "
                       f"vs {match.player2.family_name} {match.player2.first_name} : result {match.result}")
+
+    @staticmethod
+    def get_turn_management_choice():
+        user_choice = input("Do you like to get to the next turn ? (yes/no): ").lower()
+        return user_choice
+
+    @staticmethod
+    def get_quitting_confirmation():
+        confirm_exit = input("Are you sure you want to quit the tournament? (yes/no) ").lower()
+        return confirm_exit
 
     @staticmethod
     def get_player_datas():

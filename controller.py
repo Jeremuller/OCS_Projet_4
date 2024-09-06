@@ -46,147 +46,10 @@ class TournamentController:
                 self.update_national_chess_id()
             elif main_menu_choice == "7":
                 self.tournament.save_to_json("archived_tournaments.json")
-                print("Good bye!")
+                TournamentView.display_ending_message()
                 break
             else:
-                print("Invalid choice, please enter the number corresponding to your request")
-
-    def tournament_in_progress(self):
-
-        """
-
-            Checks if a tournament is currently in progress.
-
-            Returns:
-                bool: True if a tournament is in progress, False otherwise.
-
-        """
-
-        return self.tournament is not None
-
-    def create_tournament(self):
-
-        """
-
-           Creates a new tournament if none is currently in progress.
-           Prompts the user for tournament details and initializes a new Tournament object.
-
-        """
-
-        if self.tournament_in_progress():
-            print("A tournament is already running, please finish or quit it first.")
-
-        name, location, date, description = TournamentView.get_tournament_datas()
-        self.tournament = Tournament(name, location, date, description)
-        TournamentView.display_tournament_info(self.tournament)
-
-    def add_player(self):
-
-        """
-
-            Adds a new player to the current tournament or archives the player
-            if no tournament is in progress.
-
-        """
-
-        family_name, first_name, date_of_birth, national_chess_number = TournamentView.get_player_datas()
-        player = Player(family_name, first_name, date_of_birth, points=0)
-        player.national_chess_number = national_chess_number
-        player.save_players_to_json("archived_players.json")
-
-        if self.tournament_in_progress():
-            self.tournament.add_player(player)
-            TournamentView.display_players(self.tournament.players_list)
-        else:
-            print("There is no tournament running, player saved in file.")
-
-    def run_tournament(self):
-
-        """
-
-            Runs the current tournament, handling turn progression, match results,
-            and checking if the tournament has been completed.
-
-        """
-
-        # First we check if a tournament isn't already running, and then if it has players in it
-        if self.tournament_in_progress():
-            if not self.tournament.players_list:
-                print("This tournament has no players.")
-                return
-
-            # Check tournament's turns to see if we can continue running
-            while self.tournament.actual_turn_number < self.tournament.number_of_turns:
-                print(f"Starting turn {self.tournament.actual_turn_number + 1}/{self.tournament.number_of_turns}")
-
-                # Generate matches for the current turn
-                turn = self.tournament.create_turn(f"round_{self.tournament.actual_turn_number + 1}")
-                matches = turn.generate_matches()
-
-                # Set match results
-                self.process_match_results(matches)
-                self.tournament.actual_turn_number += 1
-                # Ask if the user wants to continue to the next turn
-                while True:
-                    continue_choice = input("Do you like to get to the next turn ? (yes/no): ").lower()
-                    if continue_choice == "no":
-                        confirm_exit = input("Are you sure you want to quit the tournament? (yes/no) ").lower()
-
-                        if confirm_exit == "yes":
-
-                            print("Tournament interrupted")
-                            return
-                        else:
-                            print("Back to tournament.")
-                            break
-                    elif continue_choice == "yes":
-
-                        break
-                    else:
-                        print("Invalid choice, please enter yes or no.")
-
-            # Tournament ending message with a resume of the player's scores
-            print("\nTournament is over, here is the list of the final scores: ")
-            self.tournament.save_to_json("archived_tournaments.json")
-            sorted_players = sorted(self.tournament.players_list, key=lambda player: player.points, reverse=True)
-            for sorted_player in sorted_players:
-                print(f"Player : {sorted_player.first_name} {sorted_player.family_name}"
-                      f" - Points : {sorted_player.points}")
-
-    def load_tournament(self):
-
-        """
-
-            Loads a tournament from the archive if it has not been completed.
-
-        """
-
-        try:
-            with open("archived_tournaments.json", "r", encoding="utf-8") as file:
-                tournament_list = json.load(file)
-
-                tournament_not_finished = []
-                for tournament_data in tournament_list:
-                    tournament = Tournament.deserialize_from_dict(tournament_data)
-
-                    if tournament.actual_turn_number < tournament.number_of_turns:
-                        tournament_not_finished.append(tournament)
-
-            TournamentView.display_tournament(tournament_not_finished)
-
-            index = TournamentView.get_tournament_index()
-
-            self.tournament = tournament_not_finished[index]
-            print("Tournament loaded successfully, you can now choose to start it again.")
-
-        except FileNotFoundError:
-            print("File not Found.")
-
-        except json.JSONDecodeError:
-            print("Failed to decode JSON file.")
-
-        except IOError as e:
-            print(f"Error in reading file {e}")
+                TournamentView.display_error_selection_message()
 
     @staticmethod
     def datas_menu():
@@ -216,7 +79,145 @@ class TournamentController:
                 break
 
             else:
-                print("Invalid choice, please select a number proposed above.")
+                TournamentView.display_error_selection_message()
+
+    def tournament_in_progress(self):
+
+        """
+
+            Checks if a tournament is currently in progress.
+
+            Returns:
+                bool: True if a tournament is in progress, False otherwise.
+
+        """
+
+        return self.tournament is not None
+
+    def create_tournament(self):
+
+        """
+
+           Creates a new tournament if none is currently in progress.
+           Prompts the user for tournament details and initializes a new Tournament object.
+
+        """
+
+        if self.tournament_in_progress():
+            TournamentView.display_tournament_conflict_message()
+
+        name, location, date, description = TournamentView.get_tournament_datas()
+        self.tournament = Tournament(name, location, date, description)
+        TournamentView.display_tournament_info(self.tournament)
+        self.tournament.save_to_json("archived_tournaments.json")
+
+    def add_player(self):
+
+        """
+
+            Adds a new player to the current tournament or archives the player
+            if no tournament is in progress.
+
+        """
+
+        family_name, first_name, date_of_birth, national_chess_number = TournamentView.get_player_datas()
+        player = Player(family_name, first_name, date_of_birth, points=0)
+        player.national_chess_number = national_chess_number
+        player.save_player_to_json("archived_players.json")
+
+        if self.tournament_in_progress():
+            self.tournament.add_player(player)
+            self.tournament.save_to_json("archived_tournaments.json")
+            TournamentView.display_players(self.tournament.players_list)
+        else:
+            TournamentView.display_player_saved_out_of_tournament()
+
+    def run_tournament(self):
+
+        """
+
+            Runs the current tournament, handling turn progression, match results,
+            and checking if the tournament has been completed.
+
+        """
+
+        # First we check if a tournament isn't already running, and then if it has players in it
+        if self.tournament_in_progress():
+            if not self.tournament.players_list:
+                TournamentView.display_no_player_tournament()
+                return
+
+            # Check tournament's turns to see if we can continue running
+            while self.tournament.actual_turn_number < self.tournament.number_of_turns:
+                TournamentView.display_starting_turn(self.tournament.actual_turn_number + 1,
+                                                     self.tournament.number_of_turns)
+
+                # Generate matches for the current turn
+                turn = self.tournament.create_turn(f"round_{self.tournament.actual_turn_number + 1}")
+                matches = turn.generate_matches()
+
+                # Set match results
+                self.process_match_results(matches)
+                self.tournament.actual_turn_number += 1
+                self.tournament.save_to_json("archived_tournaments.json")
+                # Ask if the user wants to continue to the next turn
+                while True:
+                    continue_choice = TournamentView.get_turn_management_choice()
+                    if continue_choice == "no":
+                        confirm_exit = TournamentView.get_quitting_confirmation()
+
+                        if confirm_exit == "yes":
+
+                            TournamentView.display_tournament_interrupted()
+                            return
+                        else:
+                            TournamentView.display_back_to_tournament()
+                            break
+                    elif continue_choice == "yes":
+
+                        break
+                    else:
+                        TournamentView.display_invalid_yes_no_choice()
+
+            self.tournament.save_to_json("archived_tournaments.json")
+            # Tournament ending message with a resume of the player's scores
+            sorted_players = sorted(self.tournament.players_list, key=lambda player: player.points, reverse=True)
+            TournamentView.display_tournament_resume(sorted_players)
+
+    def load_tournament(self):
+
+        """
+
+            Loads a tournament from the archive if it has not been completed.
+
+        """
+
+        try:
+            with open("archived_tournaments.json", "r", encoding="utf-8") as file:
+                tournament_list = json.load(file)
+
+                tournament_not_finished = []
+                for tournament_data in tournament_list:
+                    tournament = Tournament.deserialize_from_dict(tournament_data)
+
+                    if tournament.actual_turn_number < tournament.number_of_turns:
+                        tournament_not_finished.append(tournament)
+
+            TournamentView.display_tournaments(tournament_not_finished)
+
+            index = TournamentView.get_tournament_index()
+
+            self.tournament = tournament_not_finished[index]
+            TournamentView.display_tournament_load_successfully()
+
+        except FileNotFoundError:
+            TournamentView.display_file_not_found()
+
+        except json.JSONDecodeError:
+            TournamentView.display_json_decode_error()
+
+        except IOError:
+            TournamentView.display_reading_error()
 
     @staticmethod
     def process_match_results(matches):
@@ -248,7 +249,7 @@ class TournamentController:
                 players_data = json.load(file)
                 players_list = [Player.deserialize_from_dict(player_dict) for player_dict in players_data]
         except (FileNotFoundError, json.JSONDecodeError):
-            print("Error loading players data.")
+            TournamentView.display_json_decode_error()
             return
 
         TournamentView.display_players(players_list)
@@ -257,16 +258,12 @@ class TournamentController:
 
         if index is not None and 0 <= index < len(players_data):
             national_chess_number = TournamentView.get_player_national_chess_number()
-            players_data[index]["national_chess_number"] = national_chess_number
-
-            try:
-                with open("archived_players.json", "w", encoding="utf-8") as file:
-                    json.dump(players_data, file, indent=4)
-                print("Player's national chess number updated successfully.")
-            except IOError as e:
-                print(f"Failed to save data: {e}")
+            player_to_update = players_data[index]
+            player_to_update["national_chess_number"] = national_chess_number
+            player_updated = Player.deserialize_from_dict(player_to_update)
+            player_updated.save_player_to_json("archived_players.json")
         else:
-            print("Invalid player index selected.")
+            TournamentView.display_error_selection_message()
 
 
 class InformationController:
@@ -290,7 +287,7 @@ class InformationController:
         file_path = "archived_players.json"
 
         if not os.path.exists("archived_players.json"):
-            print("No file archived players found.")
+            TournamentView.display_file_not_found()
             return
 
         with open(file_path, "r", encoding="utf-8") as file:
@@ -300,7 +297,7 @@ class InformationController:
                 sorted_players_list = sorted(archived_players, key=lambda player: player.family_name)
                 TournamentView.display_players(sorted_players_list)
             except json.JSONDecodeError:
-                print("Failed to read JSON file.")
+                TournamentView.display_reading_error()
 
     @staticmethod
     def display_archived_tournaments():
@@ -314,19 +311,17 @@ class InformationController:
         file_path = "archived_tournaments.json"
 
         if not os.path.exists("archived_tournaments.json"):
-            print("No file archived tournaments found")
+            TournamentView.display_file_not_found()
             return
 
         with open(file_path, "r", encoding="utf-8") as file:
             try:
                 tournaments_data = json.load(file)
                 archived_tournaments = [Tournament.deserialize_from_dict(t) for t in tournaments_data]
-                print("\n -- Archived tournament list: --")
-                for i, tournament in enumerate(archived_tournaments, start=0):
-                    print(f"{i}. {tournament.name} - Date: {tournament.date}")
+                TournamentView.display_tournaments(archived_tournaments)
 
             except json.JSONDecodeError:
-                print("Failed to read JSON file.")
+                TournamentView.display_reading_error()
 
     @staticmethod
     def display_tournament_players():
@@ -351,13 +346,13 @@ class InformationController:
                 sorted_players_list = sorted(players_data, key=lambda player: player.family_name)
                 TournamentView.display_players(sorted_players_list)
         except FileNotFoundError:
-            print("File not Found.")
+            TournamentView.display_file_not_found()
 
         except json.JSONDecodeError:
-            print("Failed to decode JSON file.")
+            TournamentView.display_reading_error()
 
-        except IOError as e:
-            print(f"Error in reading file {e}")
+        except IOError:
+            TournamentView.display_reading_error()
 
     @staticmethod
     def display_tournament_turns():
@@ -382,13 +377,13 @@ class InformationController:
                 TournamentView.display_turns(turns_list)
 
         except FileNotFoundError:
-            print("File not Found.")
+            TournamentView.display_file_not_found()
 
         except json.JSONDecodeError:
-            print("Failed to decode JSON file.")
+            TournamentView.display_reading_error()
 
-        except IOError as e:
-            print(f"Error in reading file {e}")
+        except IOError:
+            TournamentView.display_reading_error()
 
 
 # Program entry point

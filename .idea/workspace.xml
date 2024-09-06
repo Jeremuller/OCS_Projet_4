@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Solving a few format issues, ready to send">
+    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Changement mineurs pour qualité présentation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -306,7 +307,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725404205796</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Changement mineurs pour qualité présentation">
+      <option name="closed" value="true" />
+      <created>1725606051703</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1725606051703</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -321,7 +330,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Premier travail sur les classes, fonction matchmaking à réfléchir" />
     <MESSAGE value="Révision et amélioration du premier jet. A venir, test des matchs, pour voir si les joueurs se sont déjà rencontrés, gestions de l'archivage, créer une classe &quot;turn&quot;, et retourner sur la classe match." />
     <MESSAGE value="Intégration du MVC, déplacement de plusieurs fonctions vers les modules correspondant, ajout des classes turn et TournamentList. Ajout des fonctions display demandé dans l'énoncé" />
     <MESSAGE value="Premiers tests effectués, corrections de certains éléments vue pendant le mentorat. Création de joueurs, et fonctions de bases ok. Resultats de match, et matchmaking, non fonctionels" />
@@ -346,7 +354,8 @@
     <MESSAGE value="Docstrings, comments requirements and flake8 rapport.&#10;&#10;README still missing yet" />
     <MESSAGE value="README added. Final commit." />
     <MESSAGE value="Solving a few format issues, ready to send" />
-    <option name="LAST_COMMIT_MESSAGE" value="Solving a few format issues, ready to send" />
+    <MESSAGE value="Changement mineurs pour qualité présentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changement mineurs pour qualité présentation" />
   </component>
   <component name="WfRunsListSearchHistory"><![CDATA[{
   "history": [
