@@ -29,7 +29,7 @@ class TournamentView:
         print("3. Start tournament")
         print("4. Load tournament")
         print("5. Display datas")
-        print("6. Update plater national chess number")
+        print("6. Update player national chess number")
         print("7. Quitter")
         main_menu_choice = input("Please enter the number of your choice: ")
         return main_menu_choice
@@ -124,7 +124,8 @@ class TournamentView:
         for turn in turns_list:
             print(f"{turn.name}")
             for match in turn.matches:
-                print(f"{match.match_id} : {match.player1} vs {match.player2} : result : {match.result}")
+                print(f"{match.match_id} : {match.player1.family_name} {match.player1.first_name} "
+                      f"vs {match.player2.family_name} {match.player2.first_name} : result {match.result}")
 
     @staticmethod
     def get_player_datas():
@@ -195,7 +196,7 @@ class TournamentView:
         print("Please enter the datas of the tournament you want to create")
         name = input("Name: ")
         location = input("Location: ")
-        date = input("Date () : ")
+        date = input("Date (Example 05092024) : ")
         description = input("Description: ")
         return name, location, date, description
 

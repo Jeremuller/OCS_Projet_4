@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="README added. Final commit.">
+    <list default="true" id="13a2739a-9243-41c1-8188-8e845d66e422" name="Changes" comment="Solving a few format issues, ready to send">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,20 +39,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.controler.executor": "Run",
-    "Python.controller.executor": "Run",
-    "Python.models.executor": "Run",
-    "Python.quizz.executor": "Run",
-    "Python.views.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Jérémy/OCS/OCS_Projet_4/.env/Scripts/flake8.exe",
-    "settings.editor.selected.configurable": "preferences.externalTools"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.controler.executor&quot;: &quot;Run&quot;,
+    &quot;Python.controller.executor&quot;: &quot;Run&quot;,
+    &quot;Python.models.executor&quot;: &quot;Run&quot;,
+    &quot;Python.quizz.executor&quot;: &quot;Run&quot;,
+    &quot;Python.views.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Jérémy/OCS/OCS_Projet_4/.env/Scripts/flake8.exe&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.externalTools&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Jérémy\OCS\OCS_Projet_4\Flake8_rapport" />
@@ -296,7 +298,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725403222427</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Solving a few format issues, ready to send">
+      <option name="closed" value="true" />
+      <created>1725404205796</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1725404205796</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -311,7 +321,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Commit initial" />
     <MESSAGE value="Premier travail sur les classes, fonction matchmaking à réfléchir" />
     <MESSAGE value="Révision et amélioration du premier jet. A venir, test des matchs, pour voir si les joueurs se sont déjà rencontrés, gestions de l'archivage, créer une classe &quot;turn&quot;, et retourner sur la classe match." />
     <MESSAGE value="Intégration du MVC, déplacement de plusieurs fonctions vers les modules correspondant, ajout des classes turn et TournamentList. Ajout des fonctions display demandé dans l'énoncé" />
@@ -336,10 +345,27 @@
     <MESSAGE value="Post cleaning update, still functioning.&#10;&#10;Documenting now." />
     <MESSAGE value="Docstrings, comments requirements and flake8 rapport.&#10;&#10;README still missing yet" />
     <MESSAGE value="README added. Final commit." />
-    <option name="LAST_COMMIT_MESSAGE" value="README added. Final commit." />
+    <MESSAGE value="Solving a few format issues, ready to send" />
+    <option name="LAST_COMMIT_MESSAGE" value="Solving a few format issues, ready to send" />
   </component>
   <component name="WfRunsListSearchHistory"><![CDATA[{
   "history": [
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
     {
       "branch": "master",
       "currentBranchFilter": true

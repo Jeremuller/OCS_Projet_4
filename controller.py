@@ -117,7 +117,7 @@ class TournamentController:
 
             # Check tournament's turns to see if we can continue running
             while self.tournament.actual_turn_number < self.tournament.number_of_turns:
-                print(f"Début du tour {self.tournament.actual_turn_number + 1}/{self.tournament.number_of_turns}")
+                print(f"Starting turn {self.tournament.actual_turn_number + 1}/{self.tournament.number_of_turns}")
 
                 # Generate matches for the current turn
                 turn = self.tournament.create_turn(f"round_{self.tournament.actual_turn_number + 1}")
@@ -125,7 +125,7 @@ class TournamentController:
 
                 # Set match results
                 self.process_match_results(matches)
-
+                self.tournament.actual_turn_number += 1
                 # Ask if the user wants to continue to the next turn
                 while True:
                     continue_choice = input("Do you like to get to the next turn ? (yes/no): ").lower()
@@ -140,7 +140,7 @@ class TournamentController:
                             print("Back to tournament.")
                             break
                     elif continue_choice == "yes":
-                        self.tournament.actual_turn_number += 1
+
                         break
                     else:
                         print("Invalid choice, please enter yes or no.")
@@ -372,15 +372,12 @@ class InformationController:
         try:
             with open("archived_tournaments.json", "r", encoding="utf-8") as file:
                 tournament_data = json.load(file)
-                print(tournament_data)
 
             index = TournamentView.get_tournament_index()
-            print(index)
 
             if index is not None and 0 <= index < len(tournament_data):
                 turns_data = tournament_data[index].get("turns_list", [])
                 turns_list = [Turn.deserialize_from_dict(turn) for turn in turns_data]
-                print(turns_list)
 
                 TournamentView.display_turns(turns_list)
 
